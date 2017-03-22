@@ -16,7 +16,7 @@ public class CycleEditActivity extends AppCompatActivity {
         final CycleControl currentCycle = ((MainApplication)getApplication()).getCurrentCycle();
 
         // allow currentCycle to display
-        LinearLayout displayLayout = (LinearLayout) findViewById(R.id.currentCycle);
+        LinearLayout displayLayout = (LinearLayout) findViewById(R.id.currentEditCycle);
         displayLayout.removeAllViews();
         displayLayout.addView(currentCycle);
 

@@ -8,7 +8,7 @@
     tools:context="ru.rele.relayconfig.CycleEditActivity">
 
     <LinearLayout
-        android:id="@+id/currentCycle"
+        android:id="@+id/currentEditCycle"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

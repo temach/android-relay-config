@@ -42,6 +42,7 @@ public class TimeStripControl extends LinearLayout {
         loadLayouts();
     }
 
+    // It seems that this is not used at all
     public TimeStripControl(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater inflater = LayoutInflater.from(context);
