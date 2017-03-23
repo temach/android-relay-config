@@ -38,21 +38,6 @@
             android:text="Working days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/buttonSaturdays"
-            android:text="Saturdays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/buttonSundays"
-            android:text="Sundays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/buttonSingleDay"
-            android:text="Single days"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </com.google.android.flexbox.FlexboxLayout>
 
     <LinearLayout
