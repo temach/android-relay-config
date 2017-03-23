@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.rele.relayconfig">
+    package="ru.rele.relayconfig"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="com.github.ik024.calendar_lib"/>
 
     <application
         android:name=".MainApplication"
