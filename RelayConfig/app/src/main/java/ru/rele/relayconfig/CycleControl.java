@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by artem on 3/22/17.
@@ -20,7 +19,8 @@ import java.util.Objects;
 
 public class CycleControl extends LinearLayout {
 
-    private List<TimeStripControl> timeStrips = new ArrayList<>();
+    private RelayCycleData cycleData;
+    private List<TimeStripControl> timeStripControls = new ArrayList<>();
     private Button calendarBtn;
     private Button editBtn;
 
@@ -29,8 +29,10 @@ public class CycleControl extends LinearLayout {
     private LinearLayout startTimesLayout;
     private LinearLayout endTimesLayout;
 
-    public CycleControl(Context context) {
+    // One view object (control) is forever tied to one data object (relay data)
+    public CycleControl(Context context, RelayCycleData data) {
         super(context);
+        cycleData = data;
         loadLayouts();
     }
 
@@ -74,13 +76,14 @@ public class CycleControl extends LinearLayout {
     }
 
     void fillLayoutWithTimeStrips(LinearLayout ll) {
-        for (TimeStripControl tm : timeStrips) {
+        for (TimeStripControl tm : timeStripControls) {
             ll.addView(tm);
         }
     }
 
     void addTimeStrip(TimeStripControl tm) {
-        timeStrips.add(tm);
+        cycleData.addTimeStrip(tm.timeStripData);
+        timeStripControls.add(tm);
         tm.setOnTimeStripUpdateListener(new TimeStripControl.onTimeStripUpdateListener() {
             @Override
             public void onTimeStripUpdate(TimeStripControl timeStrip) {
@@ -95,12 +98,12 @@ public class CycleControl extends LinearLayout {
         endTimesLayout.removeViews(1, endTimesLayout.getChildCount() - 1);
 
         // add all the time strips
-        for (TimeStripControl ts : timeStrips) {
+        for (TimeStripControl ts : timeStripControls) {
             TextView start = new TextView(startTimesLayout.getContext());
-            start.setText("" + ts.startHour);
+            start.setText("" + ts.timeStripData.startHour);
             startTimesLayout.addView(start);
             TextView end = new TextView(endTimesLayout.getContext());
-            end.setText("" + ts.endHour);
+            end.setText("" + ts.timeStripData.endHour);
             endTimesLayout.addView(end);
         }
     }

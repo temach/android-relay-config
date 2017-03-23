@@ -19,7 +19,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
         addCycleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CycleControl cc = new CycleControl(getBaseContext());
+                CycleControl cc = new CycleControl(getBaseContext(), new RelayCycleData());
                 cyclesList.addView(cc, 0);
             }
         });

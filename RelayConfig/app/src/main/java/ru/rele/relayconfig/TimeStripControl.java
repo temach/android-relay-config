@@ -28,25 +28,15 @@ public class TimeStripControl extends LinearLayout {
 
     ArrayList<onTimeStripUpdateListener> listeners = new ArrayList<>();
 
-    public int startHour;
-    public int startMinute;
-
-    public int endHour;
-    public int endMinute;
+    public RelayTimeStripData timeStripData;
 
     private TimePicker startPicker;
     private TimePicker endPicker;
 
-    public TimeStripControl(Context context) {
+    // One view object (control) is forever tied to one data object (relay data)
+    public TimeStripControl(Context context, RelayTimeStripData tm) {
         super(context);
-        loadLayouts();
-    }
-
-    // It seems that this is not used at all
-    public TimeStripControl(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.cycle_control, this);
+        timeStripData = tm;
         loadLayouts();
     }
 
@@ -57,8 +47,8 @@ public class TimeStripControl extends LinearLayout {
         startPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-                startHour = timePicker.getCurrentHour();
-                startMinute = timePicker.getCurrentMinute();
+                timeStripData.startHour = timePicker.getCurrentHour();
+                timeStripData.startMinute = timePicker.getCurrentMinute();
                 for (onTimeStripUpdateListener listener : listeners) {
                     listener.onTimeStripUpdate(TimeStripControl.this);
                 }
@@ -67,8 +57,8 @@ public class TimeStripControl extends LinearLayout {
         endPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-                endHour = timePicker.getCurrentHour();
-                endMinute = timePicker.getCurrentMinute();
+                timeStripData.endHour = timePicker.getCurrentHour();
+                timeStripData.endMinute = timePicker.getCurrentMinute();
                 for (onTimeStripUpdateListener listener : listeners) {
                     listener.onTimeStripUpdate(TimeStripControl.this);
                 }

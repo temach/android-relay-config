@@ -36,7 +36,7 @@ public class CycleEditActivity extends AppCompatActivity {
         addTimeStrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimeStripControl tm = new TimeStripControl(getBaseContext());
+                TimeStripControl tm = new TimeStripControl(getBaseContext(), new RelayTimeStripData());
                 currentCycle.addTimeStrip(tm);
                 LinearLayout timeStrips = (LinearLayout) findViewById(R.id.timeStripsList);
                 timeStrips.addView(tm);

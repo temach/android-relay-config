@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ru.rele.relayconfig.CycleCalendarActivity">
 
     <LinearLayout
@@ -14,19 +15,57 @@
     </LinearLayout>
 
     <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/monthsList"
+        android:id="@+id/selectMode"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="ru.rele.relayconfig.CycleCalendarActivity"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:flexDirection="row"
         app:flexWrap="wrap"
+        app:justifyContent="center"
         app:alignItems="stretch"
         app:alignContent="stretch" >
+
+        <RadioButton
+            android:id="@+id/buttonEveryDay"
+            android:text="Every day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/buttonWorkingDays"
+            android:text="Working days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/buttonSaturdays"
+            android:text="Saturdays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/buttonSundays"
+            android:text="Sundays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/buttonSingleDay"
+            android:text="Single days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </com.google.android.flexbox.FlexboxLayout>
 
-    <
+    <LinearLayout
+        android:id="@+id/yearCalendar"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </LinearLayout>
 
+    <Button
+        android:id="@+id/applyCalendar"
+        android:text="Apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
