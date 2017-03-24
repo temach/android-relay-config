@@ -30,9 +30,9 @@ public class ManageCyclesActivity extends AppCompatActivity {
         viewCalendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Show calendar for all cycles
-                // Intent myIntent = new Intent(getBaseContext(), CycleCalendarActivity.class);
-                // getBaseContext().startActivity(myIntent);
+                // Show calendar with all cycles
+                Intent myIntent = new Intent(getBaseContext(), CalendarActivity.class);
+                getBaseContext().startActivity(myIntent);
             }
         });
 

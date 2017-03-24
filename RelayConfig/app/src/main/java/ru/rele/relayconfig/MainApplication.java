@@ -15,7 +15,12 @@ public class MainApplication extends Application {
     public void setCurrentCycle(CycleControl cc) {
         currentCycle = cc;
     }
+
+    // You should not need to ever reset CurrentCycle
+    // to null because the user might "go back" to previous
+    // screen and the CurrentCycle should still be active
     public CycleControl getCurrentCycle() {
+        if (currentCycle == null) throw new AssertionError("CurrentCycle has not been set OR has been reset to null");
         return currentCycle;
     }
 

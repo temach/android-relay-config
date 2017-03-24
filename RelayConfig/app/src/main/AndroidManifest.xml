@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.rele.relayconfig"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ru.rele.relayconfig">
 
-    <uses-sdk tools:overrideLibrary="com.github.ik024.calendar_lib"/>
+    <uses-sdk tools:overrideLibrary="com.github.ik024.calendar_lib" />
 
     <application
         android:name=".MainApplication"
@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CycleEditActivity" />
-        <activity android:name=".CycleCalendarActivity"></activity>
+        <activity android:name=".CycleCalendarActivity" />
+        <activity android:name=".CalendarActivity"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,10 @@
 package ru.rele.relayconfig;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -80,6 +82,19 @@ public class CycleCalendarActivity extends AppCompatActivity {
         LinearLayout calendarLayout = (LinearLayout) findViewById(R.id.yearCalendar);
         calendarLayout.removeAllViews();
         calendarLayout.addView(yearCalendarControl);
+
+        Button applyCalendar = (Button)findViewById(R.id.applyCalendar);
+        applyCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // dont reset CurrentCycle to null because
+                // the user might "go back" to previous screen
+                // and the CurrentCycle should still be active
+                // start intent
+                Intent myIntent = new Intent(getBaseContext(), CalendarActivity.class);
+                getBaseContext().startActivity(myIntent);
+            }
+        });
 
     }
 
