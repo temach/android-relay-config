@@ -19,7 +19,9 @@ public class ManageCyclesActivity extends AppCompatActivity {
         addCycleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CycleControl cc = new CycleControl(getBaseContext(), new RelayCycleData());
+                RelayCycleData cycleData = new RelayCycleData();
+                ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
+                CycleControl cc = new CycleControl(getBaseContext(), cycleData);
                 cyclesList.addView(cc, 0);
             }
         });

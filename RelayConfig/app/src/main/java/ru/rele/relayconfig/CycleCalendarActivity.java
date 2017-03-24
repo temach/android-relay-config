@@ -6,6 +6,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
+import com.github.ik024.calendar_lib.custom.MonthView;
+import com.github.ik024.calendar_lib.custom.YearView;
+import com.github.ik024.calendar_lib.listeners.YearViewClickListeners;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class CycleCalendarActivity extends AppCompatActivity {
 
     enum DAYS_SELECT_MODE {
@@ -48,9 +56,31 @@ public class CycleCalendarActivity extends AppCompatActivity {
         });
 
         // Put the calendar into the layout.
+        final RelayCalendarData yearCalendar = ((MainApplication) getApplication()).getCalendar();
+        final YearView yearCalendarControl = ((MainApplication) getApplication()).getCalendarControl();
+        yearCalendarControl.registerYearViewClickListener(new YearViewClickListeners() {
+            @Override
+            public void dateClicked(int year, int month, int day) {
+                // add to data
+                if (currentMode == DAYS_SELECT_MODE.SINGLE_DAY) {
+                    yearCalendar.cycleAddDay(
+                            ((MainApplication) getApplication()).getCurrentCycle().getCycleData()
+                            , year, month, day);
+                }
+                else if (currentMode == DAYS_SELECT_MODE.WORKING_DAYS) {
+                    yearCalendar.cycleAddWorkingDays(
+                            ((MainApplication) getApplication()).getCurrentCycle().getCycleData()
+                            , year, month);
+                }
+                // show in control
+                yearCalendarControl.getMonthView(month).setEventList(yearCalendar.getEventsForMonth(month));
+            }
+        });
+
         LinearLayout calendarLayout = (LinearLayout) findViewById(R.id.yearCalendar);
         calendarLayout.removeAllViews();
-        calendarLayout.addView(((MainApplication) getApplication()).getCalendarControl());
+        calendarLayout.addView(yearCalendarControl);
 
     }
+
 }

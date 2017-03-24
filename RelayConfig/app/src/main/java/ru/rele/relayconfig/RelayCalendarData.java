@@ -2,6 +2,7 @@ package ru.rele.relayconfig;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.Map;
 
 public class RelayCalendarData {
 
-    private RelayCycleData currentCycle;
     private List<RelayCycleData> cycles = new ArrayList<>();
     private Map<Date, RelayCycleData> calendar = new HashMap<>();
 
@@ -23,16 +23,25 @@ public class RelayCalendarData {
         cycles.add(data);
     }
 
-    public void setCurrentCycle(RelayCycleData data) {
-        assert cycles.indexOf(data) >= 0 : "You must first add cycle, then set it as current.";
-        currentCycle = data;
+    public List<Date> getEventsForMonth(int month) {
+        List<Date> ret = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        for (Date key : calendar.keySet()) {
+            cal.setTime(key);
+            if (cal.get(Calendar.MONTH) == month) {
+                ret.add(key);
+            }
+        }
+        return Collections.unmodifiableList(ret);
     }
 
-    public void cycleAddDay(int year, int month, int day) {
-        calendar.put(getDate(year, month, day), currentCycle);
+    public void cycleAddDay(RelayCycleData cycle, int year, int month, int day) {
+        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
+        calendar.put(getDate(year, month, day), cycle);
     }
 
-    public void cycleAddSaturdays(int year, int month) {
+    public void cycleAddWorkingDays(RelayCycleData cycle, int year, int month) {
+        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
         // pass for now, refer to
         // https://developer.android.com/reference/java/util/Calendar.html
         // on how to add weekends and so on
@@ -49,4 +58,5 @@ public class RelayCalendarData {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+
 }

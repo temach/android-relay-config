@@ -44,7 +44,11 @@ public class CycleControl extends LinearLayout {
         loadLayouts();
     }
 
-    void loadLayouts() {
+    public RelayCycleData getCycleData() {
+        return cycleData;
+    }
+
+    private void loadLayouts() {
         startTimesLayout = (LinearLayout) findViewById(R.id.startTimeRow);
         endTimesLayout = (LinearLayout) findViewById(R.id.endTimeRow);
         calendarBtn = (Button) findViewById(R.id.openCalendarForTimeCycle);
