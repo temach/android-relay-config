@@ -40,11 +40,46 @@ public class RelayCalendarData {
         calendar.put(getDate(year, month, day), cycle);
     }
 
+    public void cycleRemoveDay(RelayCycleData cycle, int year, int month, int day) {
+        calendar.remove(getDate(year, month, day));
+    }
+
     public void cycleAddWorkingDays(RelayCycleData cycle, int year, int month) {
-        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
-        // pass for now, refer to
+        // refer to
         // https://developer.android.com/reference/java/util/Calendar.html
         // on how to add weekends and so on
+        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
+        Calendar counter = getCalendarFirstMonday(year, month);
+        Calendar limit = (Calendar) counter.clone();
+        limit.add(Calendar.MONTH, 1);
+        while (counter.before(limit)) {
+            if (counter.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+                    && counter.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                // add only working days
+                calendar.put(counter.getTime(), cycle);
+            }
+            // increment counter
+            counter.add(Calendar.DAY_OF_MONTH, 1);
+        }
+    }
+
+    public void cycleRemoveWorkingDays(RelayCycleData cycle, int year, int month) {
+        // refer to
+        // https://developer.android.com/reference/java/util/Calendar.html
+        // on how to add weekends and so on
+        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
+        Calendar counter = getCalendarFirstMonday(year, month);
+        Calendar limit = (Calendar) counter.clone();
+        limit.add(Calendar.MONTH, 1);
+        while (counter.before(limit)) {
+            if (counter.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+                    && counter.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                // add only working days
+                calendar.remove(counter.getTime());
+            }
+            // increment counter
+            counter.add(Calendar.DAY_OF_MONTH, 1);
+        }
     }
 
     private Date getDate(int year, int month, int day) {
@@ -57,6 +92,22 @@ public class RelayCalendarData {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
+    }
+
+    private Calendar getCalendarFirstMonday(int year, int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        // first set day to zero
+        cal.set(Calendar.DAY_OF_MONTH, 0);
+        // then set day to Monday, in the end we
+        // should get first Monday of the month
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal;
     }
 
 }

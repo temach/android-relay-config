@@ -39,7 +39,9 @@ public class TimeStripControl extends LinearLayout {
         inflate(getContext(), R.layout.timestrip_control, this);
 
         TimePicker startPicker = (TimePicker) findViewById(R.id.startTimePicker);
+        startPicker.setIs24HourView(true);
         TimePicker endPicker = (TimePicker) findViewById(R.id.endTimePicker);
+        endPicker.setIs24HourView(true);
 
         startPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override

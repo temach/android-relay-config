@@ -21,6 +21,8 @@ public class CycleCalendarActivity extends AppCompatActivity {
     enum DAYS_SELECT_MODE {
         SINGLE_DAY
         , WORKING_DAYS
+        , REMOVE_SINGLE_DAY
+        , REMOVE_WORKING_DAYS
     }
 
     DAYS_SELECT_MODE currentMode = DAYS_SELECT_MODE.SINGLE_DAY;
@@ -76,8 +78,14 @@ public class CycleCalendarActivity extends AppCompatActivity {
                 if (currentMode == DAYS_SELECT_MODE.SINGLE_DAY) {
                     calendarData.cycleAddDay(cycleData, year, month, day);
                 }
+                else if (currentMode == DAYS_SELECT_MODE.REMOVE_SINGLE_DAY) {
+                    calendarData.cycleRemoveDay(cycleData, year, month, day);
+                }
                 else if (currentMode == DAYS_SELECT_MODE.WORKING_DAYS) {
                     calendarData.cycleAddWorkingDays(cycleData, year, month);
+                }
+                else if (currentMode == DAYS_SELECT_MODE.REMOVE_WORKING_DAYS) {
+                    calendarData.cycleRemoveWorkingDays(cycleData, year, month);
                 }
                 // show in control
                 yearCalendarControl.getMonthView(month).setEventList(calendarData.getEventsForMonth(month));
