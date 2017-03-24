@@ -36,7 +36,7 @@ public class CycleControl extends LinearLayout {
         loadLayouts();
     }
 
-    // It seems that this is not used anywhere
+    // This will be used if the control is created from XML
     public CycleControl(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater inflater = LayoutInflater.from(context);

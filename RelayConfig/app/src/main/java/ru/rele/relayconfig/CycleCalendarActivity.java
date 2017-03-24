@@ -79,6 +79,7 @@ public class CycleCalendarActivity extends AppCompatActivity {
             }
         });
 
+        // Add year calendar to layout
         LinearLayout calendarLayout = (LinearLayout) findViewById(R.id.yearCalendar);
         calendarLayout.removeAllViews();
         calendarLayout.addView(yearCalendarControl);
