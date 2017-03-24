@@ -21,6 +21,7 @@
     </LinearLayout>
 
     <Button
+        android:text="Add time strip"
         android:id="@+id/addTimeStrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

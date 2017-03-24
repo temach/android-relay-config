@@ -39,8 +39,6 @@ public class CycleControl extends LinearLayout {
     // This will be used if the control is created from XML
     public CycleControl(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.cycle_control, this);
         loadLayouts();
     }
 
@@ -49,6 +47,8 @@ public class CycleControl extends LinearLayout {
     }
 
     private void loadLayouts() {
+        inflate(getContext(), R.layout.cycle_control, this);
+
         startTimesLayout = (LinearLayout) findViewById(R.id.startTimeRow);
         endTimesLayout = (LinearLayout) findViewById(R.id.endTimeRow);
         calendarBtn = (Button) findViewById(R.id.openCalendarForTimeCycle);

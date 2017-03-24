@@ -17,10 +17,11 @@ public class CalendarActivity extends AppCompatActivity {
         YearView yearCalendarControl = ((MainApplication) getApplication()).getCalendarControl();
         // clear the listener that was registered in CycleCalendarActivity
         yearCalendarControl.unregisterYearViewClickListener();
-
         // Add year calendar to layout
         LinearLayout calendarLayout = (LinearLayout) findViewById(R.id.yearCalendar);
         calendarLayout.removeAllViews();
         calendarLayout.addView(yearCalendarControl);
+
+
     }
 }

@@ -41,6 +41,8 @@ public class TimeStripControl extends LinearLayout {
     }
 
     void loadLayouts() {
+        inflate(getContext(), R.layout.timestrip_control, this);
+
         startPicker = (TimePicker) findViewById(R.id.startTimePicker);
         endPicker = (TimePicker) findViewById(R.id.endTimePicker);
 

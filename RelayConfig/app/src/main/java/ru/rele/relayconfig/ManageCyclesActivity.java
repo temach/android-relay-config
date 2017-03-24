@@ -16,6 +16,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
 
         final LinearLayout cyclesList = (LinearLayout) findViewById(R.id.cyclesList);
         Button addCycleBtn = (Button) findViewById(R.id.addCycle);
+
         addCycleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -31,10 +32,20 @@ public class ManageCyclesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Show calendar with all cycles
-                Intent myIntent = new Intent(getBaseContext(), CalendarActivity.class);
-                getBaseContext().startActivity(myIntent);
+                Intent myIntent = new Intent(ManageCyclesActivity.this, CalendarActivity.class);
+                startActivity(myIntent);
             }
         });
+
+        // RelayCycleData cycleData = new RelayCycleData();
+        // ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
+        // CycleControl cc = new CycleControl(getBaseContext(), cycleData);
+        // cyclesList.addView(cc, 0);
+
+        // ((MainApplication)getApplication()).setCurrentCycle(cc);
+        // // start intent
+        // Intent myIntent = new Intent(ManageCyclesActivity.this, CycleEditActivity.class);
+        // startActivity(myIntent);
 
     }
 }
