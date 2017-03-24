@@ -2,7 +2,9 @@ package ru.rele.relayconfig;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,19 +23,12 @@ import java.util.List;
 
 public class TimeStripControl extends LinearLayout {
 
-    public interface onTimeStripUpdateListener
-    {
-        void onTimeStripUpdate(TimeStripControl timeStrip);
-    }
-
-    ArrayList<onTimeStripUpdateListener> listeners = new ArrayList<>();
 
     public RelayTimeStripData timeStripData;
 
-    private TimePicker startPicker;
-    private TimePicker endPicker;
-
     // One view object (control) is forever tied to one data object (relay data)
+    // This control is never created in XML so there is need to
+    // provide a method that would assign the data like it is in the CycleControl
     public TimeStripControl(Context context, RelayTimeStripData tm) {
         super(context);
         timeStripData = tm;
@@ -43,35 +38,24 @@ public class TimeStripControl extends LinearLayout {
     void loadLayouts() {
         inflate(getContext(), R.layout.timestrip_control, this);
 
-        startPicker = (TimePicker) findViewById(R.id.startTimePicker);
-        endPicker = (TimePicker) findViewById(R.id.endTimePicker);
+        TimePicker startPicker = (TimePicker) findViewById(R.id.startTimePicker);
+        TimePicker endPicker = (TimePicker) findViewById(R.id.endTimePicker);
 
         startPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-                timeStripData.startHour = timePicker.getCurrentHour();
-                timeStripData.startMinute = timePicker.getCurrentMinute();
-                for (onTimeStripUpdateListener listener : listeners) {
-                    listener.onTimeStripUpdate(TimeStripControl.this);
-                }
+                timeStripData.updateStart(timePicker.getCurrentHour()
+                        , timePicker.getCurrentMinute());
             }
         });
         endPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-                timeStripData.endHour = timePicker.getCurrentHour();
-                timeStripData.endMinute = timePicker.getCurrentMinute();
-                for (onTimeStripUpdateListener listener : listeners) {
-                    listener.onTimeStripUpdate(TimeStripControl.this);
-                }
+                timeStripData.updateEnd(timePicker.getCurrentHour()
+                        , timePicker.getCurrentMinute());
             }
         });
     }
 
-    public void setOnTimeStripUpdateListener(onTimeStripUpdateListener listener)
-    {
-        // Store the listener object
-        this.listeners.add(listener);
-    }
 
 }

@@ -30,13 +30,6 @@ public class CycleCalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cycle_calendar);
 
-        final CycleControl currentCycle = ((MainApplication)getApplication()).getCurrentCycle();
-
-        // allow currentCycle to display
-        LinearLayout displayLayout = (LinearLayout) findViewById(R.id.currentCalendarCycle);
-        displayLayout.removeAllViews();
-        displayLayout.addView(currentCycle);
-
         // Control radio buttons to select the mode
         final RadioButton everyDay = (RadioButton) findViewById(R.id.buttonEveryDay);
         final RadioButton workingDays = (RadioButton) findViewById(R.id.buttonWorkingDays);
@@ -57,43 +50,46 @@ public class CycleCalendarActivity extends AppCompatActivity {
             }
         });
 
-        // Put the calendar into the layout.
-        final RelayCalendarData yearCalendar = ((MainApplication) getApplication()).getCalendar();
-        final YearView yearCalendarControl = ((MainApplication) getApplication()).getCalendarControl();
+        // get cycle info
+        final RelayCycleData cycleData = ((MainApplication)getApplication()).getCycle();
+
+        // allow currentCycle to display
+        CycleControl cycleControl = (CycleControl) findViewById(R.id.currentCalendarCycle);
+        cycleControl.assignData(cycleData);
+
+        // get calendar data
+        final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCalendar();
+
+        // Now fill calendar with data
+        final YearView yearCalendarControl = (YearView) findViewById(R.id.oneCycleYearCalendar);
+        for (int month=0; month < 12; month++) {
+            yearCalendarControl.getMonthView(month).setEventList(
+                    calendarData.getEventsForMonth(month)
+            );
+        }
+
+        // Configure calendar to react to user input
         yearCalendarControl.registerYearViewClickListener(new YearViewClickListeners() {
             @Override
             public void dateClicked(int year, int month, int day) {
                 // add to data
                 if (currentMode == DAYS_SELECT_MODE.SINGLE_DAY) {
-                    yearCalendar.cycleAddDay(
-                            ((MainApplication) getApplication()).getCurrentCycle().getCycleData()
-                            , year, month, day);
+                    calendarData.cycleAddDay(cycleData, year, month, day);
                 }
                 else if (currentMode == DAYS_SELECT_MODE.WORKING_DAYS) {
-                    yearCalendar.cycleAddWorkingDays(
-                            ((MainApplication) getApplication()).getCurrentCycle().getCycleData()
-                            , year, month);
+                    calendarData.cycleAddWorkingDays(cycleData, year, month);
                 }
                 // show in control
-                yearCalendarControl.getMonthView(month).setEventList(yearCalendar.getEventsForMonth(month));
+                yearCalendarControl.getMonthView(month).setEventList(calendarData.getEventsForMonth(month));
             }
         });
-
-        // Add year calendar to layout
-        LinearLayout calendarLayout = (LinearLayout) findViewById(R.id.yearCalendar);
-        calendarLayout.removeAllViews();
-        calendarLayout.addView(yearCalendarControl);
 
         Button applyCalendar = (Button)findViewById(R.id.applyCalendar);
         applyCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // dont reset CurrentCycle to null because
-                // the user might "go back" to previous screen
-                // and the CurrentCycle should still be active
-                // start intent
-                Intent myIntent = new Intent(getBaseContext(), CalendarActivity.class);
-                getBaseContext().startActivity(myIntent);
+                Intent myIntent = new Intent(CycleCalendarActivity.this, CalendarActivity.class);
+                startActivity(myIntent);
             }
         });
 

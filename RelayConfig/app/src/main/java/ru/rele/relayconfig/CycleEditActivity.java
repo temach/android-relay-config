@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.sql.Timestamp;
+
 public class CycleEditActivity extends AppCompatActivity {
 
     @Override
@@ -13,19 +15,21 @@ public class CycleEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cycle_edit);
 
-        final CycleControl currentCycle = ((MainApplication)getApplication()).getCurrentCycle();
+        final RelayCycleData cycleData = ((MainApplication)getApplication()).getCycle();
 
         // allow currentCycle to display
-        LinearLayout displayLayout = (LinearLayout) findViewById(R.id.currentEditCycle);
-        displayLayout.removeAllViews();
-        displayLayout.addView(currentCycle);
+        CycleControl cycleControl = (CycleControl) findViewById(R.id.currentEditCycle);
+        cycleControl.assignData(cycleData);
 
         // when the activity is created, the currentCycle may
         // already have some TimeStrips, so add them to LinearLayout
         // to allow editing
-        LinearLayout timeStripsLayout = (LinearLayout)findViewById(R.id.timeStripsList);
+        final LinearLayout timeStripsLayout = (LinearLayout)findViewById(R.id.timeStripsList);
         timeStripsLayout.removeAllViews();
-        currentCycle.fillLayoutWithTimeStrips(timeStripsLayout);
+        for (RelayTimeStripData tm : cycleData.getTimeStrips()) {
+            TimeStripControl control = new TimeStripControl(getBaseContext(), tm);
+            timeStripsLayout.addView(control);
+        }
 
         // when we click add time strip on screen 3
         // we create a new timeStrip control
@@ -36,11 +40,13 @@ public class CycleEditActivity extends AppCompatActivity {
         addTimeStrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimeStripControl tm = new TimeStripControl(getBaseContext(), new RelayTimeStripData());
-                currentCycle.addTimeStrip(tm);
-                LinearLayout timeStrips = (LinearLayout) findViewById(R.id.timeStripsList);
-                timeStrips.addView(tm);
+                RelayTimeStripData data = new RelayTimeStripData();
+                cycleData.addTimeStrip(data);
+                TimeStripControl control = new TimeStripControl(getBaseContext(), data);
+                // show the new control
+                timeStripsLayout.addView(control);
             }
         });
     }
+
 }

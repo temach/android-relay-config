@@ -15,4 +15,15 @@ public class MainApplication extends Application {
     public RelayCalendarData getCalendar() {
         return calendar;
     }
+
+    private RelayCycleData cycle;
+    public RelayCycleData getCycle() {
+        if (cycle == null) throw new AssertionError("Cycle can not be null");
+        return cycle;
+    }
+    public void setCycle(RelayCycleData c) {
+        if (c == null) throw new AssertionError("Cycle can not be null");
+        cycle = c;
+    }
+
 }

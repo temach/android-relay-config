@@ -14,14 +14,15 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        YearView yearCalendarControl = ((MainApplication) getApplication()).getCalendarControl();
-        // clear the listener that was registered in CycleCalendarActivity
-        yearCalendarControl.unregisterYearViewClickListener();
-        // Add year calendar to layout
-        LinearLayout calendarLayout = (LinearLayout) findViewById(R.id.yearCalendar);
-        calendarLayout.removeAllViews();
-        calendarLayout.addView(yearCalendarControl);
+        // get calendar data
+        final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCalendar();
 
-
+        // Now fill calendar with data
+        final YearView yearCalendarControl = (YearView) findViewById(R.id.yearCalendar);
+        for (int month=0; month < 12; month++) {
+            yearCalendarControl.getMonthView(month).setEventList(
+                    calendarData.getEventsForMonth(month)
+            );
+        }
     }
 }

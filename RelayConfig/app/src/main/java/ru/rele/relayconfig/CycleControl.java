@@ -20,7 +20,6 @@ import java.util.List;
 public class CycleControl extends LinearLayout {
 
     private RelayCycleData cycleData;
-    private List<TimeStripControl> timeStripControls = new ArrayList<>();
     private Button calendarBtn;
     private Button editBtn;
 
@@ -30,9 +29,8 @@ public class CycleControl extends LinearLayout {
     private LinearLayout endTimesLayout;
 
     // One view object (control) is forever tied to one data object (relay data)
-    public CycleControl(Context context, RelayCycleData data) {
+    public CycleControl(Context context) {
         super(context);
-        cycleData = data;
         loadLayouts();
     }
 
@@ -42,8 +40,17 @@ public class CycleControl extends LinearLayout {
         loadLayouts();
     }
 
-    public RelayCycleData getCycleData() {
-        return cycleData;
+    public void assignData(RelayCycleData cycle) {
+        cycleData = cycle;
+        cycleData.setOnCycleUpdateListener(new RelayCycleData.onCycleUpdateListener() {
+            @Override
+            public void onCycleUpdate(RelayCycleData data) {
+                // whatever changes, just redraw the display
+                redrawCycleDisplay();
+            }
+        });
+        // and redraw the display now as well
+        redrawCycleDisplay();
     }
 
     private void loadLayouts() {
@@ -57,57 +64,34 @@ public class CycleControl extends LinearLayout {
         calendarBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get ready to share quest info
-                MainApplication app = (MainApplication) getContext().getApplicationContext();
-                app.setCurrentCycle(CycleControl.this);
                 // start intent
-                Intent myIntent = new Intent(getContext(), CycleCalendarActivity.class);
-                getContext().startActivity(myIntent);
+                Intent myIntent = new Intent(CycleControl.this.getContext(), CycleCalendarActivity.class);
+                CycleControl.this.getContext().startActivity(myIntent);
             }
         });
 
         editBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get ready to share quest info
-                MainApplication app = (MainApplication) getContext().getApplicationContext();
-                app.setCurrentCycle(CycleControl.this);
                 // start intent
-                Intent myIntent = new Intent(getContext(), CycleEditActivity.class);
-                getContext().startActivity(myIntent);
+                Intent myIntent = new Intent(CycleControl.this.getContext(), CycleEditActivity.class);
+                CycleControl.this.getContext().startActivity(myIntent);
             }
         });
     }
 
-    void fillLayoutWithTimeStrips(LinearLayout ll) {
-        for (TimeStripControl tm : timeStripControls) {
-            ll.addView(tm);
-        }
-    }
-
-    void addTimeStrip(TimeStripControl tm) {
-        cycleData.addTimeStrip(tm.timeStripData);
-        timeStripControls.add(tm);
-        tm.setOnTimeStripUpdateListener(new TimeStripControl.onTimeStripUpdateListener() {
-            @Override
-            public void onTimeStripUpdate(TimeStripControl timeStrip) {
-                redrawCycleDisplay();
-            }
-        });
-    }
-
-    void redrawCycleDisplay() {
+    public void redrawCycleDisplay() {
         // clear layouts, except for the first TextView
         startTimesLayout.removeViews(1, startTimesLayout.getChildCount() - 1);
         endTimesLayout.removeViews(1, endTimesLayout.getChildCount() - 1);
 
         // add all the time strips
-        for (TimeStripControl ts : timeStripControls) {
+        for (RelayTimeStripData ts : cycleData.getTimeStrips()) {
             TextView start = new TextView(startTimesLayout.getContext());
-            start.setText("" + ts.timeStripData.startHour);
+            start.setText("" + ts.getStartHour());
             startTimesLayout.addView(start);
             TextView end = new TextView(endTimesLayout.getContext());
-            end.setText("" + ts.timeStripData.endHour);
+            end.setText("" + ts.getEndHour());
             endTimesLayout.addView(end);
         }
     }

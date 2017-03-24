@@ -7,12 +7,12 @@
     android:orientation="vertical"
     tools:context="ru.rele.relayconfig.CycleCalendarActivity">
 
-    <LinearLayout
+    <ru.rele.relayconfig.CycleControl
         android:id="@+id/currentCalendarCycle"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </LinearLayout>
+    </ru.rele.relayconfig.CycleControl>
 
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/selectMode"
@@ -40,12 +40,11 @@
             android:layout_height="wrap_content" />
     </com.google.android.flexbox.FlexboxLayout>
 
-    <LinearLayout
-        android:id="@+id/yearCalendar"
-        android:orientation="vertical"
+    <com.github.ik024.calendar_lib.custom.YearView
+        android:id="@+id/oneCycleYearCalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </LinearLayout>
+    </com.github.ik024.calendar_lib.custom.YearView>
 
     <Button
         android:id="@+id/applyCalendar"

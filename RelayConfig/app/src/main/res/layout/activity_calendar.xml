@@ -6,19 +6,11 @@
     android:orientation="vertical"
     tools:context="ru.rele.relayconfig.CalendarActivity">
 
-    <LinearLayout
-        android:id="@+id/monthYearCalendar"
-        android:orientation="vertical"
+    <com.github.ik024.calendar_lib.custom.YearView
+        android:id="@+id/yearCalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/barYearCalendar"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </LinearLayout>
+    </com.github.ik024.calendar_lib.custom.YearView>
 
     <Button
         android:id="@+id/buttonGotoManageCyclesActivity"

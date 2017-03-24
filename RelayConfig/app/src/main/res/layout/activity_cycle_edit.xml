@@ -6,12 +6,12 @@
     android:orientation="vertical"
     tools:context="ru.rele.relayconfig.CycleEditActivity">
 
-    <LinearLayout
+    <ru.rele.relayconfig.CycleControl
         android:id="@+id/currentEditCycle"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </LinearLayout>
+    </ru.rele.relayconfig.CycleControl>
 
     <LinearLayout
         android:id="@+id/timeStripsList"
