@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import info.staticfree.android.twentyfourhour.Analog24HClock;
 
 /**
  * Created by artem on 3/22/17.
@@ -22,6 +20,8 @@ public class CycleControl extends LinearLayout {
     private RelayCycleData cycleData;
     private Button calendarBtn;
     private Button editBtn;
+    private Analog24HClock clock;
+    private float clockRatio;
 
     // These two are used in the current display model
     // they will be removed when the proper circular control will be made
@@ -41,15 +41,24 @@ public class CycleControl extends LinearLayout {
     }
 
     public void assignData(RelayCycleData cycle) {
+        clockRatio = 0.4f;
+        clock.clearDialOverlays();
         cycleData = cycle;
         cycleData.setOnCycleUpdateListener(new RelayCycleData.onCycleUpdateListener() {
             @Override
-            public void onCycleUpdate(RelayCycleData data) {
+            public void onCycleUpdate(RelayCycleData data, RelayTimeStripData tmData, RelayCycleData.EVENT_TYPE type) {
                 // whatever changes, just redraw the display
+                if (type == RelayCycleData.EVENT_TYPE.ADD_TIME_STRIP) {
+                    clockRatio += 0.1f;
+                    ClockOverlayTimeStrip overlay = new ClockOverlayTimeStrip(tmData, clockRatio);
+                    clock.addDialOverlay(overlay);
+                }
+                clock.invalidate();
+                // this line will be removed
                 redrawCycleDisplay();
             }
         });
-        // and redraw the display now as well
+        // and redraw the display now as well, this line will be removed
         redrawCycleDisplay();
     }
 
@@ -60,10 +69,12 @@ public class CycleControl extends LinearLayout {
         endTimesLayout = (LinearLayout) findViewById(R.id.endTimeRow);
         calendarBtn = (Button) findViewById(R.id.openCalendarForTimeCycle);
         editBtn = (Button) findViewById(R.id.editTimeCycle);
+        clock = (Analog24HClock) findViewById(R.id.clock24hours);
 
         calendarBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((MainApplication)getContext().getApplicationContext()).setCycle(cycleData);
                 // start intent
                 Intent myIntent = new Intent(CycleControl.this.getContext(), CycleCalendarActivity.class);
                 CycleControl.this.getContext().startActivity(myIntent);
@@ -73,6 +84,7 @@ public class CycleControl extends LinearLayout {
         editBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((MainApplication)getContext().getApplicationContext()).setCycle(cycleData);
                 // start intent
                 Intent myIntent = new Intent(CycleControl.this.getContext(), CycleEditActivity.class);
                 CycleControl.this.getContext().startActivity(myIntent);
@@ -88,12 +100,13 @@ public class CycleControl extends LinearLayout {
         // add all the time strips
         for (RelayTimeStripData ts : cycleData.getTimeStrips()) {
             TextView start = new TextView(startTimesLayout.getContext());
-            start.setText("" + ts.getStartHour());
+            start.setText("  " + ts.getStartHour() + " ");
             startTimesLayout.addView(start);
             TextView end = new TextView(endTimesLayout.getContext());
-            end.setText("" + ts.getEndHour());
+            end.setText("  " + ts.getEndHour() + " ");
             endTimesLayout.addView(end);
         }
+
     }
 
 }

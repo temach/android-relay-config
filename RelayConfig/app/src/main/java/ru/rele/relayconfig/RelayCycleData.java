@@ -10,10 +10,14 @@ import java.util.List;
 
 public class RelayCycleData {
 
+    enum EVENT_TYPE {
+        ADD_TIME_STRIP
+        , UPDATE_TIME_STRIP;
+    }
 
     public interface onCycleUpdateListener
     {
-        void onCycleUpdate(RelayCycleData data);
+        void onCycleUpdate(RelayCycleData data, RelayTimeStripData tmData, EVENT_TYPE eventType);
     }
 
     private List<RelayTimeStripData> timeStrips = new ArrayList<>();
@@ -36,18 +40,18 @@ public class RelayCycleData {
             @Override
             public void onTimeStripUpdate(RelayTimeStripData data) {
                 // tell others one of the time strips has changed
-                informListeners();
+                informListeners(data, EVENT_TYPE.UPDATE_TIME_STRIP);
             }
         });
         // tell others we have a new time strip
-        informListeners();
+        informListeners(tm, EVENT_TYPE.ADD_TIME_STRIP);
     }
 
-    public void informListeners() {
+    public void informListeners(RelayTimeStripData tmData, EVENT_TYPE type) {
         // tell others we have a new time strip
         // and everything needs to be redrawn
         for (onCycleUpdateListener listener : listeners) {
-            listener.onCycleUpdate(RelayCycleData.this);
+            listener.onCycleUpdate(RelayCycleData.this, tmData, type);
         }
     }
 

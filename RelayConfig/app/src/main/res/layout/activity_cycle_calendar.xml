@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="ru.rele.relayconfig.CycleCalendarActivity">
 
     <ru.rele.relayconfig.CycleControl
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:id="@+id/currentCalendarCycle"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </ru.rele.relayconfig.CycleControl>
 
-    <com.google.android.flexbox.FlexboxLayout
+    <RadioGroup
+        android:layout_below="@id/currentCalendarCycle"
         android:id="@+id/selectMode"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="ru.rele.relayconfig.CycleCalendarActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:flexDirection="row"
-        app:flexWrap="wrap"
-        app:justifyContent="center"
-        app:alignItems="stretch"
-        app:alignContent="stretch" >
-
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <RadioButton
             android:id="@+id/buttonEveryDay"
-            android:text="Every day"
+            android:text="+One"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <RadioButton
             android:id="@+id/buttonWorkingDays"
-            android:text="Working days"
+            android:text="+Work"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </com.google.android.flexbox.FlexboxLayout>
+        <RadioButton
+            android:id="@+id/buttonRemoveEveryDay"
+            android:text="-One"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/buttonRemoveWorkingDays"
+            android:text="-Work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
 
     <com.github.ik024.calendar_lib.custom.YearView
+        android:layout_below="@id/selectMode"
         android:id="@+id/oneCycleYearCalendar"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </com.github.ik024.calendar_lib.custom.YearView>
 
     <Button
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         android:id="@+id/applyCalendar"
         android:text="Apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexboxLayout;
+
 public class ManageCyclesActivity extends AppCompatActivity {
 
     @Override
@@ -14,7 +16,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_cycles);
 
-        final LinearLayout cyclesList = (LinearLayout) findViewById(R.id.cyclesList);
+        final FlexboxLayout cyclesList = (FlexboxLayout) findViewById(R.id.cyclesList);
         Button addCycleBtn = (Button) findViewById(R.id.addCycle);
 
         addCycleBtn.setOnClickListener(new View.OnClickListener() {
@@ -22,7 +24,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 RelayCycleData cycleData = new RelayCycleData();
                 ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
-                CycleControl cc = new CycleControl(getBaseContext());
+                CycleControl cc = new CycleControl(ManageCyclesActivity.this);
                 cc.assignData(cycleData);
                 cyclesList.addView(cc, 0);
             }
@@ -38,6 +40,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
             }
         });
 
+        // This is for debug
         RelayCycleData cycleData = new RelayCycleData();
         ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
         CycleControl cc = new CycleControl(getBaseContext());

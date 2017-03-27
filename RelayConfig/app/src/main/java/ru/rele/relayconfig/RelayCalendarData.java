@@ -49,7 +49,7 @@ public class RelayCalendarData {
         // https://developer.android.com/reference/java/util/Calendar.html
         // on how to add weekends and so on
         if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
-        Calendar counter = getCalendarFirstMonday(year, month);
+        Calendar counter = getCalendarFirstDay(year, month);
         Calendar limit = (Calendar) counter.clone();
         limit.add(Calendar.MONTH, 1);
         while (counter.before(limit)) {
@@ -68,7 +68,7 @@ public class RelayCalendarData {
         // https://developer.android.com/reference/java/util/Calendar.html
         // on how to add weekends and so on
         if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
-        Calendar counter = getCalendarFirstMonday(year, month);
+        Calendar counter = getCalendarFirstDay(year, month);
         Calendar limit = (Calendar) counter.clone();
         limit.add(Calendar.MONTH, 1);
         while (counter.before(limit)) {
@@ -94,7 +94,7 @@ public class RelayCalendarData {
         return cal.getTime();
     }
 
-    private Calendar getCalendarFirstMonday(int year, int month) {
+    private Calendar getCalendarFirstDay(int year, int month) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
@@ -102,7 +102,7 @@ public class RelayCalendarData {
         cal.set(Calendar.DAY_OF_MONTH, 0);
         // then set day to Monday, in the end we
         // should get first Monday of the month
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        // cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);

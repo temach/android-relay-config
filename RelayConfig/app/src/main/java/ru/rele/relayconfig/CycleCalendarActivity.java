@@ -35,20 +35,30 @@ public class CycleCalendarActivity extends AppCompatActivity {
         // Control radio buttons to select the mode
         final RadioButton everyDay = (RadioButton) findViewById(R.id.buttonEveryDay);
         final RadioButton workingDays = (RadioButton) findViewById(R.id.buttonWorkingDays);
+        final RadioButton rmWorkingDays = (RadioButton) findViewById(R.id.buttonRemoveWorkingDays);
+        final RadioButton rmEveryDay = (RadioButton) findViewById(R.id.buttonRemoveEveryDay);
         everyDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // turn off other radio buttons
-                workingDays.setChecked(false);
                 currentMode = DAYS_SELECT_MODE.SINGLE_DAY;
             }
         });
         workingDays.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // turn off other radio buttons
-                everyDay.setChecked(false);
                 currentMode = DAYS_SELECT_MODE.WORKING_DAYS;
+            }
+        });
+        rmEveryDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentMode = DAYS_SELECT_MODE.REMOVE_SINGLE_DAY;
+            }
+        });
+        rmWorkingDays.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentMode = DAYS_SELECT_MODE.REMOVE_WORKING_DAYS;
             }
         });
 
