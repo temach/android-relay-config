@@ -14,10 +14,10 @@ import info.staticfree.android.twentyfourhour.Analog24HClock;
 
 public class ClockOverlayTimeStripManager {
 
-    private final float minRadius = 0.5f;
-    private final float maxRadius = 0.9f;
-    private final int strokeWidth = 2;
-    private final int alphaTransparency = 127;
+    private final float minRadius = 0.68f;
+    private final float maxRadius = 0.8f;
+    private final int strokeWidth = 3;
+    private final int alphaTransparency = 200;
 
     private List<Integer> colors;
     private Analog24HClock clock;
@@ -36,7 +36,8 @@ public class ClockOverlayTimeStripManager {
     }
 
     private float getNextRadius() {
-        return minRadius + radiusStep * overlays.size();
+        // start drawing from the outside
+        return maxRadius - radiusStep * overlays.size();
     }
 
     private Paint getNextPaint() {

@@ -60,7 +60,7 @@ public class CycleControl extends LinearLayout implements RelayCycleData.onCycle
 
         // add some colors
         timeStripColors.add(Color.RED);
-        timeStripColors.add(Color.GREEN);
+        timeStripColors.add(Color.MAGENTA);
         timeStripColors.add(Color.BLUE);
         // and the manager
         timeStripManager = new ClockOverlayTimeStripManager(clock, timeStripColors);
