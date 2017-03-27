@@ -2,12 +2,15 @@ package ru.rele.relayconfig;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import info.staticfree.android.twentyfourhour.Analog24HClock;
 
@@ -15,18 +18,16 @@ import info.staticfree.android.twentyfourhour.Analog24HClock;
  * Created by artem on 3/22/17.
  */
 
-public class CycleControl extends LinearLayout {
+public class CycleControl extends LinearLayout implements RelayCycleData.onCycleUpdateListener {
 
     private RelayCycleData cycleData;
     private Button calendarBtn;
     private Button editBtn;
     private Analog24HClock clock;
-    private float clockRatio;
+    private ClockOverlayText cycleName;
+    private ClockOverlayTimeStripManager timeStripManager;
 
-    // These two are used in the current display model
-    // they will be removed when the proper circular control will be made
-    private LinearLayout startTimesLayout;
-    private LinearLayout endTimesLayout;
+    private List<Integer> timeStripColors = new ArrayList<>();
 
     // One view object (control) is forever tied to one data object (relay data)
     public CycleControl(Context context) {
@@ -41,35 +42,28 @@ public class CycleControl extends LinearLayout {
     }
 
     public void assignData(RelayCycleData cycle) {
-        clockRatio = 0.4f;
-        clock.clearDialOverlays();
+        if (cycleData != null) {
+            cycleData.removeOnCycleUpdateListener(this);
+        }
         cycleData = cycle;
-        cycleData.setOnCycleUpdateListener(new RelayCycleData.onCycleUpdateListener() {
-            @Override
-            public void onCycleUpdate(RelayCycleData data, RelayTimeStripData tmData, RelayCycleData.EVENT_TYPE type) {
-                // whatever changes, just redraw the display
-                if (type == RelayCycleData.EVENT_TYPE.ADD_TIME_STRIP) {
-                    clockRatio += 0.1f;
-                    ClockOverlayTimeStrip overlay = new ClockOverlayTimeStrip(tmData, clockRatio);
-                    clock.addDialOverlay(overlay);
-                }
-                clock.invalidate();
-                // this line will be removed
-                redrawCycleDisplay();
-            }
-        });
-        // and redraw the display now as well, this line will be removed
-        redrawCycleDisplay();
+        cycleData.addOnCycleUpdateListener(this);
+        timeStripManager.refillClock(cycleData.getTimeStrips());
+        clock.invalidate();
     }
 
     private void loadLayouts() {
         inflate(getContext(), R.layout.cycle_control, this);
 
-        startTimesLayout = (LinearLayout) findViewById(R.id.startTimeRow);
-        endTimesLayout = (LinearLayout) findViewById(R.id.endTimeRow);
         calendarBtn = (Button) findViewById(R.id.openCalendarForTimeCycle);
         editBtn = (Button) findViewById(R.id.editTimeCycle);
         clock = (Analog24HClock) findViewById(R.id.clock24hours);
+
+        // add some colors
+        timeStripColors.add(Color.RED);
+        timeStripColors.add(Color.GREEN);
+        timeStripColors.add(Color.BLUE);
+        // and the manager
+        timeStripManager = new ClockOverlayTimeStripManager(clock, timeStripColors);
 
         calendarBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -92,21 +86,12 @@ public class CycleControl extends LinearLayout {
         });
     }
 
-    public void redrawCycleDisplay() {
-        // clear layouts, except for the first TextView
-        startTimesLayout.removeViews(1, startTimesLayout.getChildCount() - 1);
-        endTimesLayout.removeViews(1, endTimesLayout.getChildCount() - 1);
-
-        // add all the time strips
-        for (RelayTimeStripData ts : cycleData.getTimeStrips()) {
-            TextView start = new TextView(startTimesLayout.getContext());
-            start.setText("  " + ts.getStartHour() + " ");
-            startTimesLayout.addView(start);
-            TextView end = new TextView(endTimesLayout.getContext());
-            end.setText("  " + ts.getEndHour() + " ");
-            endTimesLayout.addView(end);
+    @Override
+    public void onCycleUpdate(RelayCycleData data, RelayTimeStripData tmData, RelayCycleData.EVENT_TYPE eventType) {
+        // whatever changes, just redraw the display
+        if (eventType == RelayCycleData.EVENT_TYPE.ADD_TIME_STRIP) {
+            timeStripManager.refillClock(data.getTimeStrips());
         }
-
+        clock.invalidate();
     }
-
 }

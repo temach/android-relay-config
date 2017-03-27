@@ -48,9 +48,11 @@ public class RelayTimeStripData {
         }
     }
 
-    public void setOnTimeStripUpdateListener(onTimeStripUpdateListener listener)
-    {
-        // Store the listener object
+    public void addOnTimeStripUpdateListener(onTimeStripUpdateListener listener) {
         this.listeners.add(listener);
+    }
+
+    public void removeOnTimeStripUpdateListener(onTimeStripUpdateListener listener) {
+        this.listeners.remove(listener);
     }
 }

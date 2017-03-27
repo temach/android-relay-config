@@ -10,6 +10,8 @@ import java.util.List;
 
 public class RelayCycleData {
 
+    private List<RelayTimeStripData> timeStrips = new ArrayList<>();
+
     enum EVENT_TYPE {
         ADD_TIME_STRIP
         , UPDATE_TIME_STRIP;
@@ -20,14 +22,14 @@ public class RelayCycleData {
         void onCycleUpdate(RelayCycleData data, RelayTimeStripData tmData, EVENT_TYPE eventType);
     }
 
-    private List<RelayTimeStripData> timeStrips = new ArrayList<>();
-
     private List<onCycleUpdateListener> listeners = new ArrayList<>();
 
-    public void setOnCycleUpdateListener(onCycleUpdateListener listener)
-    {
-        // Store the listener object
-        this.listeners.add(listener);
+    public void addOnCycleUpdateListener(onCycleUpdateListener listener) {
+        this.listeners.add(listener);   // Store the listener object
+    }
+
+    public void removeOnCycleUpdateListener(onCycleUpdateListener listener) {
+        this.listeners.remove(listener);
     }
 
     public List<RelayTimeStripData> getTimeStrips() {
@@ -36,7 +38,7 @@ public class RelayCycleData {
 
     public void addTimeStrip(RelayTimeStripData tm) {
         timeStrips.add(tm);
-        tm.setOnTimeStripUpdateListener(new RelayTimeStripData.onTimeStripUpdateListener() {
+        tm.addOnTimeStripUpdateListener(new RelayTimeStripData.onTimeStripUpdateListener() {
             @Override
             public void onTimeStripUpdate(RelayTimeStripData data) {
                 // tell others one of the time strips has changed
