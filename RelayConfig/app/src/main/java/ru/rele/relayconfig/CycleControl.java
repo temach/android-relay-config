@@ -24,7 +24,7 @@ public class CycleControl extends LinearLayout implements RelayCycleData.onCycle
     private Button calendarBtn;
     private Button editBtn;
     private Analog24HClock clock;
-    private ClockOverlayText cycleName;
+    private ClockOverlayText cycleName = new ClockOverlayText(-0.295f, -0.1875f, 0.0625f);
     private ClockOverlayTimeStripManager timeStripManager;
 
     private List<Integer> timeStripColors = new ArrayList<>();
@@ -46,6 +46,7 @@ public class CycleControl extends LinearLayout implements RelayCycleData.onCycle
             cycleData.removeOnCycleUpdateListener(this);
         }
         cycleData = cycle;
+        cycleName.setText(cycleData.getCycleName());
         cycleData.addOnCycleUpdateListener(this);
         timeStripManager.refillClock(cycleData.getTimeStrips());
         clock.invalidate();
@@ -56,7 +57,9 @@ public class CycleControl extends LinearLayout implements RelayCycleData.onCycle
 
         calendarBtn = (Button) findViewById(R.id.openCalendarForTimeCycle);
         editBtn = (Button) findViewById(R.id.editTimeCycle);
+
         clock = (Analog24HClock) findViewById(R.id.clock24hours);
+        clock.addDialOverlay(cycleName);
 
         // add some colors
         timeStripColors.add(Color.RED);

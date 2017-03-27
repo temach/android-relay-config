@@ -10,6 +10,7 @@ import java.util.List;
 
 public class RelayCycleData {
 
+    private String cycleName = "Cycle 3";
     private List<RelayTimeStripData> timeStrips = new ArrayList<>();
 
     enum EVENT_TYPE {
@@ -34,6 +35,10 @@ public class RelayCycleData {
 
     public List<RelayTimeStripData> getTimeStrips() {
         return Collections.unmodifiableList(timeStrips);
+    }
+
+    public String getCycleName() {
+        return cycleName;
     }
 
     public void addTimeStrip(RelayTimeStripData tm) {
