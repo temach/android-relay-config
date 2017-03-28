@@ -41,16 +41,16 @@ public class ManageCyclesActivity extends AppCompatActivity {
         });
 
         // This is for debug
-        RelayCycleData cycleData = new RelayCycleData();
-        ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
-        CycleControl cc = new CycleControl(getBaseContext());
-        cc.assignData(cycleData);
-        cyclesList.addView(cc, 0);
+        // RelayCycleData cycleData = new RelayCycleData();
+        // ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
+        // CycleControl cc = new CycleControl(getBaseContext());
+        // cc.assignData(cycleData);
+        // cyclesList.addView(cc, 0);
 
-        ((MainApplication)getApplication()).setCycle(cycleData);
-        // start intent
-        Intent myIntent = new Intent(ManageCyclesActivity.this, CycleEditActivity.class);
-        startActivity(myIntent);
+        // ((MainApplication)getApplication()).setCycle(cycleData);
+        // // start intent
+        // Intent myIntent = new Intent(ManageCyclesActivity.this, CycleEditActivity.class);
+        // startActivity(myIntent);
 
     }
 }

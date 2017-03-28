@@ -18,16 +18,13 @@ import info.staticfree.android.twentyfourhour.Analog24HClock;
  * Created by artem on 3/22/17.
  */
 
-public class CycleControl extends LinearLayout implements RelayCycleData.onCycleUpdateListener {
+public class CycleControl extends Analog24HClock implements RelayCycleData.onCycleUpdateListener {
 
     private RelayCycleData cycleData;
-    private Button calendarBtn;
-    private Button editBtn;
 
     private ClockOverlayButton calendarButton;
     private ClockOverlayButton editButton;
 
-    private Analog24HClock clock;
     private ClockOverlayText cycleName;
     private ClockOverlayTimeStripManager timeStripManager;
 
@@ -53,15 +50,10 @@ public class CycleControl extends LinearLayout implements RelayCycleData.onCycle
         cycleName.setText(cycleData.getCycleName());
         cycleData.addOnCycleUpdateListener(this);
         timeStripManager.refillClock(cycleData.getTimeStrips());
-        clock.invalidate();
+        this.invalidate();
     }
 
     private void loadLayouts() {
-        inflate(getContext(), R.layout.cycle_control, this);
-
-        calendarBtn = (Button) findViewById(R.id.openCalendarForTimeCycle);
-        editBtn = (Button) findViewById(R.id.editTimeCycle);
-
         calendarButton = new ClockOverlayButton(-0.2f, -0.35f, 0.045f);
         calendarButton.setText("CAL");
         calendarButton.setOnClickListener(new ClockOverlayButton.OnClickListener() {
@@ -88,19 +80,18 @@ public class CycleControl extends LinearLayout implements RelayCycleData.onCycle
 
         cycleName = new ClockOverlayText(-0.295f, -0.07f, 0.0625f);
 
-        clock = (Analog24HClock) findViewById(R.id.clock24hours);
-        clock.addDialOverlay(cycleName);
-        clock.addDialOverlay(calendarButton);
-        clock.addDialOverlay(editButton);
-        clock.addTouchOverlay(calendarButton);
-        clock.addTouchOverlay(editButton);
+        this.addDialOverlay(cycleName);
+        this.addDialOverlay(calendarButton);
+        this.addDialOverlay(editButton);
+        this.addTouchOverlay(calendarButton);
+        this.addTouchOverlay(editButton);
 
         // add some colors
         timeStripColors.add(Color.RED);
         timeStripColors.add(Color.MAGENTA);
         timeStripColors.add(Color.BLUE);
         // and the manager
-        timeStripManager = new ClockOverlayTimeStripManager(clock, timeStripColors);
+        timeStripManager = new ClockOverlayTimeStripManager(this, timeStripColors);
     }
 
     @Override
@@ -109,6 +100,6 @@ public class CycleControl extends LinearLayout implements RelayCycleData.onCycle
         if (eventType == RelayCycleData.EVENT_TYPE.ADD_TIME_STRIP) {
             timeStripManager.refillClock(data.getTimeStrips());
         }
-        clock.invalidate();
+        this.invalidate();
     }
 }
