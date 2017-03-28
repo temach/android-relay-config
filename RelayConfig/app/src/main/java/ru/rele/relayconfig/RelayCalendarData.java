@@ -35,6 +35,10 @@ public class RelayCalendarData {
         return Collections.unmodifiableList(ret);
     }
 
+    public List<RelayCycleData> getCycles() {
+        return Collections.unmodifiableList(cycles);
+    }
+
     public void cycleAddDay(RelayCycleData cycle, int year, int month, int day) {
         if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
         calendar.put(getDate(year, month, day), cycle);

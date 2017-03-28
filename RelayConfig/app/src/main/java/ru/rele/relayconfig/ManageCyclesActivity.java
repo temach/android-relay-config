@@ -17,13 +17,21 @@ public class ManageCyclesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_cycles);
 
         final FlexboxLayout cyclesList = (FlexboxLayout) findViewById(R.id.cyclesList);
-        Button addCycleBtn = (Button) findViewById(R.id.addCycle);
 
+        final RelayCalendarData calendar = ((MainApplication)getApplication()).getCalendar();
+
+        for (RelayCycleData cycle : calendar.getCycles()) {
+            CycleControl cc = new CycleControl(ManageCyclesActivity.this);
+            cc.assignData(cycle);
+            cyclesList.addView(cc, 0);
+        }
+
+        Button addCycleBtn = (Button) findViewById(R.id.addCycle);
         addCycleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RelayCycleData cycleData = new RelayCycleData();
-                ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
+                calendar.addRelayCycle(cycleData);
                 CycleControl cc = new CycleControl(ManageCyclesActivity.this);
                 cc.assignData(cycleData);
                 cyclesList.addView(cc, 0);
