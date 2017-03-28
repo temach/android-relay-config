@@ -2,6 +2,7 @@ package ru.rele.relayconfig;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -38,16 +39,29 @@ public class TimeStripControl extends LinearLayout {
     void loadLayouts() {
         inflate(getContext(), R.layout.timestrip_control, this);
 
-        TimePicker startPicker = (TimePicker) findViewById(R.id.startTimePicker);
+        final TimePicker startPicker = (TimePicker) findViewById(R.id.startTimePicker);
         startPicker.setIs24HourView(true);
-        TimePicker endPicker = (TimePicker) findViewById(R.id.endTimePicker);
+        startPicker.setCurrentHour(9);
+        startPicker.setCurrentMinute(0);
+        final TimePicker endPicker = (TimePicker) findViewById(R.id.endTimePicker);
         endPicker.setIs24HourView(true);
+        endPicker.setCurrentHour(18);
+        endPicker.setCurrentMinute(0);
+
+        // final Drawable bgColorDefault = getBackground();
 
         startPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker timePicker, int i, int i1) {
                 timeStripData.updateStart(timePicker.getCurrentHour()
                         , timePicker.getCurrentMinute());
+                // warn that the cycle which passes midnight is dangerous
+                if (startPicker.getCurrentHour() < endPicker.getCurrentHour()) {
+                    TimeStripControl.this.setBackgroundResource(R.color.warnValue);
+                }
+                else {
+                    TimeStripControl.this.setBackgroundColor(0);
+                }
             }
         });
         endPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -55,6 +69,13 @@ public class TimeStripControl extends LinearLayout {
             public void onTimeChanged(TimePicker timePicker, int i, int i1) {
                 timeStripData.updateEnd(timePicker.getCurrentHour()
                         , timePicker.getCurrentMinute());
+                // warn that the cycle which passes midnight is dangerous
+                if (startPicker.getCurrentHour() < endPicker.getCurrentHour()) {
+                    TimeStripControl.this.setBackgroundResource(R.color.warnValue);
+                }
+                else {
+                    TimeStripControl.this.setBackgroundColor(0);
+                }
             }
         });
     }

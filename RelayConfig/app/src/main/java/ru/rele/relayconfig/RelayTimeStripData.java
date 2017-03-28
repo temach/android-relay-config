@@ -48,6 +48,25 @@ public class RelayTimeStripData {
         }
     }
 
+    public boolean isOverlapping(RelayTimeStripData other) {
+        // check other.start is included
+        if (this.startHour < other.startHour && other.startHour < this.endHour)
+            return true;
+        // check other.end is included
+        else if (this.startHour < other.endHour && other.endHour < this.endHour)
+            return true;
+
+        // check the other way around
+        // check other.start is included
+        if (other.startHour < this.startHour && this.startHour < other.endHour)
+            return true;
+        // check this.end is included
+        else if (other.startHour < this.endHour && this.endHour < other.endHour)
+            return true;
+
+        return false;
+    }
+
     public void addOnTimeStripUpdateListener(onTimeStripUpdateListener listener) {
         this.listeners.add(listener);
     }

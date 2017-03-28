@@ -95,10 +95,19 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
     }
 
     @Override
-    public void onCycleUpdate(RelayCycleData data, RelayTimeStripData tmData, RelayCycleData.EVENT_TYPE eventType) {
+    public void onCycleUpdate(RelayCycleData cycleData, RelayTimeStripData tmData, RelayCycleData.EVENT_TYPE eventType) {
         // whatever changes, just redraw the display
         if (eventType == RelayCycleData.EVENT_TYPE.ADD_TIME_STRIP) {
-            timeStripManager.refillClock(data.getTimeStrips());
+            timeStripManager.refillClock(cycleData.getTimeStrips());
+        }
+        else if (eventType == RelayCycleData.EVENT_TYPE.UPDATE_TIME_STRIP) {
+            CycleControl.this.setBackgroundColor(0);
+            // check that we have no overlapping cycles
+            for (RelayTimeStripData tm : cycleData.getTimeStrips()) {
+                if (tm != tmData && tmData.isOverlapping(tm)) {
+                    CycleControl.this.setBackgroundResource(R.color.warnValue);
+                }
+            }
         }
         this.invalidate();
     }

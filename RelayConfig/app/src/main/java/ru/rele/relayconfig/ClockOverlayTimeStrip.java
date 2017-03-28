@@ -51,8 +51,19 @@ public class ClockOverlayTimeStrip implements DialOverlay, RelayTimeStripData.on
         RectF circle = new RectF(cX - r, cY - r, cX + r, cY + r);
         float angle1 = getHourHandAngle(startHour) + 90;
         float angle2 = getHourHandAngle(endHour) + 90;
-        float sweepAngle = Math.abs(angle2 - angle1);
-        canvas.drawArc(circle, angle1, sweepAngle, false, paint);
+        if (startHour < endHour) {
+            // start time < end time
+            float sweepAngle = angle2 - angle1;
+            canvas.drawArc(circle, angle1, sweepAngle, false, paint);
+        }
+        else if (startHour > endHour){
+            // start time (e.g 23:00) > end time (e.g. 4:00 AM)
+            float sweepAngle = 360 - (angle1 - angle2);
+            canvas.drawArc(circle, angle1, sweepAngle, false, paint);
+        }
+        else {
+            // if they are equal, do NOT draw anything
+        }
     }
 
     private static float getHourHandAngle(int h) {

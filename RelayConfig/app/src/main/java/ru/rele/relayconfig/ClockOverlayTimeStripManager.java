@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.staticfree.android.twentyfourhour.Analog24HClock;
+import info.staticfree.android.twentyfourhour.overlay.TimeStripOverlay;
 
 /**
  * Created by artem on 3/27/17.
