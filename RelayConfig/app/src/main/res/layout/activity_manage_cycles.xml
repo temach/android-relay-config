@@ -6,28 +6,36 @@
     android:layout_height="match_parent"
     tools:context="ru.rele.relayconfig.ManageCyclesActivity">
 
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/cyclesList"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="ru.rele.relayconfig.CycleCalendarActivity"
+    <ScrollView
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/cyclesCalendar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:flexDirection="row"
-        app:flexWrap="wrap"
-        app:justifyContent="center"
-        app:alignItems="stretch"
-        app:alignContent="stretch" >
-
-        <Button
-            android:id="@+id/addCycle"
-            android:text="Add Cycle"
+        android:layout_height="wrap_content">
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/cyclesList"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context="ru.rele.relayconfig.CycleCalendarActivity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </com.google.android.flexbox.FlexboxLayout>
+            android:layout_height="wrap_content"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="space_between"
+            app:alignItems="stretch"
+            app:alignContent="stretch" >
+
+            <Button
+                android:id="@+id/addCycle"
+                android:text="Add Cycle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </com.google.android.flexbox.FlexboxLayout>
+    </ScrollView>
 
     <Button
+        android:text="Master calendar"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:id="@+id/cyclesCalendar"

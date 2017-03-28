@@ -41,14 +41,6 @@
             android:layout_height="wrap_content" />
     </RadioGroup>
 
-    <com.github.ik024.calendar_lib.custom.YearView
-        android:layout_below="@id/selectMode"
-        android:id="@+id/oneCycleYearCalendar"
-        android:layout_centerHorizontal="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.github.ik024.calendar_lib.custom.YearView>
-
     <Button
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
@@ -56,5 +48,15 @@
         android:text="Apply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <com.github.ik024.calendar_lib.custom.YearView
+        android:layout_below="@id/selectMode"
+        android:layout_above="@id/applyCalendar"
+        android:id="@+id/oneCycleYearCalendar"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.github.ik024.calendar_lib.custom.YearView>
+
 
 </RelativeLayout>
