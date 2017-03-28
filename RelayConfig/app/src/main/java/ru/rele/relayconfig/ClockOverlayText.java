@@ -44,6 +44,11 @@ public class ClockOverlayText implements DialOverlay {
         text = textNew;
     }
 
+    // This is the background rectangle
+    public RectF getTodayRect() {
+        return todayRect;
+    }
+
     @Override
     public void onDraw(final Canvas canvas, final int cX, final int cY, final int w, final int h,
                        final Calendar calendar, final boolean sizeChanged) {
