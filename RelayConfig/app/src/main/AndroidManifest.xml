@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".CycleEditActivity" />
         <activity android:name=".CycleCalendarActivity" />
-        <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".CycleNameActivity"></activity>
     </application>
 
 </manifest>

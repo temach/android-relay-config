@@ -6,11 +6,11 @@
     android:orientation="vertical"
     tools:context="ru.rele.relayconfig.CalendarActivity">
 
-    <com.github.ik024.calendar_lib.custom.YearView
+    <ru.rele.relayconfig.CalendarControl
         android:id="@+id/yearCalendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.github.ik024.calendar_lib.custom.YearView>
+    </ru.rele.relayconfig.CalendarControl>
 
     <Button
         android:id="@+id/buttonGotoManageCyclesActivity"

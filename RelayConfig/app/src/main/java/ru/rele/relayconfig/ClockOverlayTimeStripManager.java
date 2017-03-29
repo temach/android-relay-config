@@ -15,7 +15,7 @@ import info.staticfree.android.twentyfourhour.overlay.TimeStripOverlay;
 
 public class ClockOverlayTimeStripManager {
 
-    private final float minRadius = 0.68f;
+    private final float minRadius = 0.72f;
     private final float maxRadius = 0.8f;
     private final int strokeWidth = 3;
     private final int alphaTransparency = 200;

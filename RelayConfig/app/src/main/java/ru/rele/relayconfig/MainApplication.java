@@ -2,7 +2,6 @@ package ru.rele.relayconfig;
 
 import android.app.Application;
 
-import com.github.ik024.calendar_lib.custom.YearView;
 
 /**
  * Created by artem on 3/22/17.
@@ -16,14 +15,14 @@ public class MainApplication extends Application {
         return calendar;
     }
 
-    private RelayCycleData cycle;
-    public RelayCycleData getCycle() {
-        if (cycle == null) throw new AssertionError("Cycle can not be null");
-        return cycle;
+    private RelayCycleData currentCycle;
+    public RelayCycleData getCurrentCycle() {
+        if (currentCycle == null) throw new AssertionError("Cycle can not be null");
+        return currentCycle;
     }
-    public void setCycle(RelayCycleData c) {
+    public void setCurrentCycle(RelayCycleData c) {
         if (c == null) throw new AssertionError("Cycle can not be null");
-        cycle = c;
+        currentCycle = c;
     }
 
 }

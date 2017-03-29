@@ -1,5 +1,7 @@
 package ru.rele.relayconfig;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +12,10 @@ import java.util.List;
 
 public class RelayCycleData {
 
-    private String cycleName = "Cycle 3";
+    // This are public which is a quick hack.
+    public String cycleName = "Cycle 0";
+    public int cycleColor = Color.RED;
+
     private List<RelayTimeStripData> timeStrips = new ArrayList<>();
 
     enum EVENT_TYPE {

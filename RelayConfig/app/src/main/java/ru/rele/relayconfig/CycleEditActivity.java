@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import java.sql.Timestamp;
-
 public class CycleEditActivity extends AppCompatActivity {
 
     @Override
@@ -15,7 +13,7 @@ public class CycleEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cycle_edit);
 
-        final RelayCycleData cycleData = ((MainApplication)getApplication()).getCycle();
+        final RelayCycleData cycleData = ((MainApplication)getApplication()).getCurrentCycle();
 
         // allow currentCycle to display
         CycleControl cycleControl = (CycleControl) findViewById(R.id.currentEditCycle);

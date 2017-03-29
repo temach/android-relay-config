@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.rele.relayconfig.CycleNameActivity">
+
+    <EditText
+        android:layout_alignParentTop="true"
+        android:id="@+id/cycleName"
+        android:inputType="textPersonName"
+        android:hint="Lightbulb morning cycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.flask.colorpicker.ColorPickerView
+        android:layout_below="@id/cycleName"
+        android:id="@+id/cycleColorPicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:density="12"
+        app:wheelType="FLOWER" />
+
+</RelativeLayout>

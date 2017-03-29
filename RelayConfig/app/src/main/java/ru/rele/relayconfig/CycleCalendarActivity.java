@@ -5,16 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import com.github.ik024.calendar_lib.custom.MonthView;
-import com.github.ik024.calendar_lib.custom.YearView;
 import com.github.ik024.calendar_lib.listeners.YearViewClickListeners;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class CycleCalendarActivity extends AppCompatActivity {
 
@@ -63,7 +56,7 @@ public class CycleCalendarActivity extends AppCompatActivity {
         });
 
         // get cycle info
-        final RelayCycleData cycleData = ((MainApplication)getApplication()).getCycle();
+        final RelayCycleData cycleData = ((MainApplication)getApplication()).getCurrentCycle();
 
         // allow currentCycle to display
         CycleControl cycleControl = (CycleControl) findViewById(R.id.currentCalendarCycle);
@@ -73,12 +66,9 @@ public class CycleCalendarActivity extends AppCompatActivity {
         final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCalendar();
 
         // Now fill calendar with data
-        final YearView yearCalendarControl = (YearView) findViewById(R.id.oneCycleYearCalendar);
-        for (int month=0; month < 12; month++) {
-            yearCalendarControl.getMonthView(month).setEventList(
-                    calendarData.getEventsForMonth(month)
-            );
-        }
+        final CalendarControl yearCalendarControl = (CalendarControl) findViewById(R.id.oneCycleYearCalendar);
+        yearCalendarControl.assignCalendarData(calendarData);
+
 
         // Configure calendar to react to user input
         yearCalendarControl.registerYearViewClickListener(new YearViewClickListeners() {
@@ -98,7 +88,7 @@ public class CycleCalendarActivity extends AppCompatActivity {
                     calendarData.cycleRemoveWorkingDays(cycleData, year, month);
                 }
                 // show in control
-                yearCalendarControl.getMonthView(month).setEventList(calendarData.getEventsForMonth(month));
+                yearCalendarControl.refreshMonth(calendarData, month);
             }
         });
 

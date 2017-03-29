@@ -2,6 +2,7 @@ package ru.rele.relayconfig;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -40,13 +41,7 @@ public class TimeStripControl extends LinearLayout {
         inflate(getContext(), R.layout.timestrip_control, this);
 
         final TimePicker startPicker = (TimePicker) findViewById(R.id.startTimePicker);
-        startPicker.setIs24HourView(true);
-        startPicker.setCurrentHour(9);
-        startPicker.setCurrentMinute(0);
         final TimePicker endPicker = (TimePicker) findViewById(R.id.endTimePicker);
-        endPicker.setIs24HourView(true);
-        endPicker.setCurrentHour(18);
-        endPicker.setCurrentMinute(0);
 
         // final Drawable bgColorDefault = getBackground();
 
@@ -56,11 +51,11 @@ public class TimeStripControl extends LinearLayout {
                 timeStripData.updateStart(timePicker.getCurrentHour()
                         , timePicker.getCurrentMinute());
                 // warn that the cycle which passes midnight is dangerous
-                if (startPicker.getCurrentHour() < endPicker.getCurrentHour()) {
+                if (startPicker.getCurrentHour() > endPicker.getCurrentHour()) {
                     TimeStripControl.this.setBackgroundResource(R.color.warnValue);
                 }
                 else {
-                    TimeStripControl.this.setBackgroundColor(0);
+                    TimeStripControl.this.setBackgroundColor(Color.argb(0, 0, 0, 0));
                 }
             }
         });
@@ -70,14 +65,24 @@ public class TimeStripControl extends LinearLayout {
                 timeStripData.updateEnd(timePicker.getCurrentHour()
                         , timePicker.getCurrentMinute());
                 // warn that the cycle which passes midnight is dangerous
-                if (startPicker.getCurrentHour() < endPicker.getCurrentHour()) {
+                if (startPicker.getCurrentHour() > endPicker.getCurrentHour()) {
                     TimeStripControl.this.setBackgroundResource(R.color.warnValue);
                 }
                 else {
-                    TimeStripControl.this.setBackgroundColor(0);
+                    TimeStripControl.this.setBackgroundColor(Color.argb(0, 0, 0, 0));
                 }
             }
         });
+
+        // set GUI values after registering the listener 
+        // so that data checking is enabled
+        startPicker.setIs24HourView(true);
+        startPicker.setCurrentHour(9);
+        startPicker.setCurrentMinute(0);
+
+        endPicker.setIs24HourView(true);
+        endPicker.setCurrentHour(18);
+        endPicker.setCurrentMinute(0);
     }
 
 

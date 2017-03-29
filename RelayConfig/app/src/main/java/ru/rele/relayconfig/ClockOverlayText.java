@@ -43,6 +43,9 @@ public class ClockOverlayText implements DialOverlay {
     public void setText(String textNew) {
         text = textNew;
     }
+    public void setBgPaint(int color) {
+        mBgPaint.setColor(color);
+    }
 
     // This is the background rectangle
     public RectF getTodayRect() {

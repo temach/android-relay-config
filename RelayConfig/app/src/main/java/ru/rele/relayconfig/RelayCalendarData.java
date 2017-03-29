@@ -23,16 +23,16 @@ public class RelayCalendarData {
         cycles.add(data);
     }
 
-    public List<Date> getEventsForMonth(int month) {
-        List<Date> ret = new ArrayList<>();
+    public Map<Date,RelayCycleData> getEventsForMonth(int month) {
+        Map<Date,RelayCycleData> ret = new HashMap<>();
         Calendar cal = Calendar.getInstance();
         for (Date key : calendar.keySet()) {
             cal.setTime(key);
             if (cal.get(Calendar.MONTH) == month) {
-                ret.add(key);
+                ret.put(key, calendar.get(key));
             }
         }
-        return Collections.unmodifiableList(ret);
+        return Collections.unmodifiableMap(ret);
     }
 
     public List<RelayCycleData> getCycles() {

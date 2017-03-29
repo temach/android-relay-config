@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +21,9 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
 
     private ClockOverlayButton calendarButton;
     private ClockOverlayButton editButton;
+    private ClockOverlayButton cycleName;
 
-    private ClockOverlayText cycleName;
+    private ClockOverlayText cycleColor;
     private ClockOverlayTimeStripManager timeStripManager;
 
     private List<Integer> timeStripColors = new ArrayList<>();
@@ -47,44 +45,66 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
             cycleData.removeOnCycleUpdateListener(this);
         }
         cycleData = cycle;
-        cycleName.setText(cycleData.getCycleName());
         cycleData.addOnCycleUpdateListener(this);
+
+        cycleName.setText(cycle.cycleName);
+        cycleColor.setBgPaint(cycle.cycleColor);
+
         timeStripManager.refillClock(cycleData.getTimeStrips());
         this.invalidate();
     }
 
     private void loadLayouts() {
-        calendarButton = new ClockOverlayButton(-0.2f, -0.35f, 0.045f);
+        calendarButton = new ClockOverlayButton(-0.2f, -0.5f, 0.045f);
         calendarButton.setText("CAL");
         calendarButton.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override
             public void onClockOverlayButtonClick() {
-                ((MainApplication)getContext().getApplicationContext()).setCycle(cycleData);
+                ((MainApplication)getContext().getApplicationContext()).setCurrentCycle(cycleData);
                 // start intent
                 Intent myIntent = new Intent(CycleControl.this.getContext(), CycleCalendarActivity.class);
                 CycleControl.this.getContext().startActivity(myIntent);
             }
         });
 
-        editButton = new ClockOverlayButton(-0.2f, 0.35f, 0.045f);
+        cycleColor = new ClockOverlayText(-0.295f, 0.2f, 0.0625f);
+        // quick hack to give the rectangle some size
+        cycleColor.setText("   ");
+
+        cycleName = new ClockOverlayButton(-0.295f, -0.05f, 0.0625f);
+        cycleName.setOnClickListener(new ClockOverlayButton.OnClickListener() {
+            @Override
+            public void onClockOverlayButtonClick() {
+                ((MainApplication)getContext().getApplicationContext()).setCurrentCycle(cycleData);
+                // start intent
+                Intent myIntent = new Intent(CycleControl.this.getContext(), CycleNameActivity.class);
+                CycleControl.this.getContext().startActivity(myIntent);
+            }
+        });
+
+        editButton = new ClockOverlayButton(-0.2f, 0.5f, 0.045f);
         editButton.setText("EDIT");
         editButton.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override
             public void onClockOverlayButtonClick() {
-                ((MainApplication)getContext().getApplicationContext()).setCycle(cycleData);
+                ((MainApplication)getContext().getApplicationContext()).setCurrentCycle(cycleData);
                 // start intent
                 Intent myIntent = new Intent(CycleControl.this.getContext(), CycleEditActivity.class);
                 CycleControl.this.getContext().startActivity(myIntent);
             }
         });
 
-        cycleName = new ClockOverlayText(-0.295f, -0.07f, 0.0625f);
 
         this.addDialOverlay(cycleName);
+        this.addTouchOverlay(cycleName);
+
         this.addDialOverlay(calendarButton);
-        this.addDialOverlay(editButton);
         this.addTouchOverlay(calendarButton);
+
+        this.addDialOverlay(editButton);
         this.addTouchOverlay(editButton);
+
+        this.addDialOverlay(cycleColor);
 
         // add some colors
         timeStripColors.add(Color.RED);

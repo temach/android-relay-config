@@ -49,14 +49,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <com.github.ik024.calendar_lib.custom.YearView
+    <ru.rele.relayconfig.CalendarControl
         android:layout_below="@id/selectMode"
         android:layout_above="@id/applyCalendar"
         android:id="@+id/oneCycleYearCalendar"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.github.ik024.calendar_lib.custom.YearView>
+    </ru.rele.relayconfig.CalendarControl>
 
 
 </RelativeLayout>

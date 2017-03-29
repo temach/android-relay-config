@@ -1,6 +1,7 @@
 package ru.rele.relayconfig;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import com.google.android.flexbox.FlexboxLayout;
 
 public class ManageCyclesActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
                 calendar.addRelayCycle(cycleData);
                 CycleControl cc = new CycleControl(ManageCyclesActivity.this);
                 cc.assignData(cycleData);
-                cyclesList.addView(cc, 0);
+                cyclesList.addView(cc, cyclesList.getChildCount() - 1);
             }
         });
 
@@ -55,10 +57,27 @@ public class ManageCyclesActivity extends AppCompatActivity {
         // cc.assignData(cycleData);
         // cyclesList.addView(cc, 0);
 
-        // ((MainApplication)getApplication()).setCycle(cycleData);
+        // ((MainApplication)getApplication()).setCurrentCycle(cycleData);
         // // start intent
         // Intent myIntent = new Intent(ManageCyclesActivity.this, CycleEditActivity.class);
         // startActivity(myIntent);
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final FlexboxLayout cyclesList = (FlexboxLayout) findViewById(R.id.cyclesList);
+        cyclesList.removeViews(0, cyclesList.getChildCount() - 1);
+
+        final RelayCalendarData calendar = ((MainApplication)getApplication()).getCalendar();
+
+        for (RelayCycleData cycle : calendar.getCycles()) {
+            CycleControl cc = new CycleControl(ManageCyclesActivity.this);
+            cc.assignData(cycle);
+            cyclesList.addView(cc, 0);
+        }
+    }
+
 }
