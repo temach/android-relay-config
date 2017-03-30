@@ -5,6 +5,9 @@
 
     <uses-sdk tools:overrideLibrary="com.github.ik024.calendar_lib" />
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -13,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ManageCyclesActivity">
+        <activity android:name=".WifiActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +26,8 @@
         <activity android:name=".CycleEditActivity" />
         <activity android:name=".CycleCalendarActivity" />
         <activity android:name=".CalendarActivity" />
-        <activity android:name=".CycleNameActivity"></activity>
+        <activity android:name=".CycleNameActivity" />
+        <activity android:name=".ManageCyclesActivity"></activity>
     </application>
 
 </manifest>
