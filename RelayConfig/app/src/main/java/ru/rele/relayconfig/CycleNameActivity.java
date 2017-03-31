@@ -9,6 +9,8 @@ import android.widget.EditText;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 
+import ru.rele.relayconfig.relaydata.RelayCycleData;
+
 public class CycleNameActivity extends AppCompatActivity {
 
     @Override

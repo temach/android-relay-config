@@ -1,14 +1,16 @@
 package ru.rele.relayconfig;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.google.android.flexbox.FlexboxLayout;
+
+import ru.rele.relayconfig.controls.CycleControl;
+import ru.rele.relayconfig.relaydata.RelayCalendarData;
+import ru.rele.relayconfig.relaydata.RelayCycleData;
 
 public class ManageCyclesActivity extends AppCompatActivity {
 
@@ -45,7 +47,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Show calendar with all cycles
-                Intent myIntent = new Intent(ManageCyclesActivity.this, CalendarActivity.class);
+                Intent myIntent = new Intent(ManageCyclesActivity.this, CalendarOverviewActivity.class);
                 startActivity(myIntent);
             }
         });

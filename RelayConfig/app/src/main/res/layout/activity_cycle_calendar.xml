@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context="ru.rele.relayconfig.CycleCalendarActivity">
 
-    <ru.rele.relayconfig.CycleControl
+    <ru.rele.relayconfig.controls.CycleControl
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/currentCalendarCycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </ru.rele.relayconfig.CycleControl>
+    </ru.rele.relayconfig.controls.CycleControl>
 
     <RadioGroup
         android:layout_below="@id/currentCalendarCycle"
@@ -49,14 +49,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <ru.rele.relayconfig.CalendarControl
+    <ru.rele.relayconfig.controls.CalendarControl
         android:layout_below="@id/selectMode"
         android:layout_above="@id/applyCalendar"
         android:id="@+id/oneCycleYearCalendar"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </ru.rele.relayconfig.CalendarControl>
+    </ru.rele.relayconfig.controls.CalendarControl>
 
 
 </RelativeLayout>

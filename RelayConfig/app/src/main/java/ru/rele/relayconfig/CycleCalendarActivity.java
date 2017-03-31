@@ -9,6 +9,11 @@ import android.widget.RadioButton;
 
 import com.github.ik024.calendar_lib.listeners.YearViewClickListeners;
 
+import ru.rele.relayconfig.controls.CalendarControl;
+import ru.rele.relayconfig.controls.CycleControl;
+import ru.rele.relayconfig.relaydata.RelayCalendarData;
+import ru.rele.relayconfig.relaydata.RelayCycleData;
+
 public class CycleCalendarActivity extends AppCompatActivity {
 
     enum DAYS_SELECT_MODE {
@@ -96,7 +101,7 @@ public class CycleCalendarActivity extends AppCompatActivity {
         applyCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(CycleCalendarActivity.this, CalendarActivity.class);
+                Intent myIntent = new Intent(CycleCalendarActivity.this, CalendarOverviewActivity.class);
                 startActivity(myIntent);
             }
         });

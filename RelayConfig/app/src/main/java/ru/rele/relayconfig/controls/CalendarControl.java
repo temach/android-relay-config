@@ -1,4 +1,4 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.controls;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,11 +7,12 @@ import android.util.AttributeSet;
 import com.github.ik024.calendar_lib.adapters.EventInfo;
 import com.github.ik024.calendar_lib.custom.YearView;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import ru.rele.relayconfig.relaydata.RelayCalendarData;
+import ru.rele.relayconfig.relaydata.RelayCycleData;
 
 /**
  * Created by artem on 3/29/17.

@@ -1,4 +1,4 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.relaydata;
 
 import java.util.ArrayList;
 import java.util.Calendar;

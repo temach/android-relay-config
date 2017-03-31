@@ -1,4 +1,4 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.controls;
 
 import info.staticfree.android.twentyfourhour.overlay.DialOverlay;
 

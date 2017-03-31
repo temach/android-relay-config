@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context="ru.rele.relayconfig.CycleEditActivity">
 
-    <ru.rele.relayconfig.CycleControl
+    <ru.rele.relayconfig.controls.CycleControl
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/currentEditCycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </ru.rele.relayconfig.CycleControl>
+    </ru.rele.relayconfig.controls.CycleControl>
 
     <ScrollView
         android:layout_below="@id/currentEditCycle"

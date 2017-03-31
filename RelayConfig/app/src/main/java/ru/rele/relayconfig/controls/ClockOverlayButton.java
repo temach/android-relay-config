@@ -1,12 +1,8 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.controls;
 
-import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
-import java.util.Calendar;
-
-import info.staticfree.android.twentyfourhour.overlay.DialOverlay;
 import info.staticfree.android.twentyfourhour.overlay.TouchOverlay;
 
 /**

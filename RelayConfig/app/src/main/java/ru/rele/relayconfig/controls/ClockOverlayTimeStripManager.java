@@ -1,13 +1,12 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.controls;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import info.staticfree.android.twentyfourhour.Analog24HClock;
-import info.staticfree.android.twentyfourhour.overlay.TimeStripOverlay;
+import ru.rele.relayconfig.relaydata.RelayTimeStripData;
 
 /**
  * Created by artem on 3/27/17.

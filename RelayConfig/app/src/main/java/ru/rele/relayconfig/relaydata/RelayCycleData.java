@@ -1,4 +1,4 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.relaydata;
 
 import android.graphics.Color;
 
@@ -18,7 +18,7 @@ public class RelayCycleData {
 
     private List<RelayTimeStripData> timeStrips = new ArrayList<>();
 
-    enum EVENT_TYPE {
+    public enum EVENT_TYPE {
         ADD_TIME_STRIP
         , UPDATE_TIME_STRIP;
     }

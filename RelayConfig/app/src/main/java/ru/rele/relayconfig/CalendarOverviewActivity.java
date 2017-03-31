@@ -2,16 +2,16 @@ package ru.rele.relayconfig;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 
-import com.github.ik024.calendar_lib.listeners.YearViewClickListeners;
+import ru.rele.relayconfig.controls.CalendarControl;
+import ru.rele.relayconfig.relaydata.RelayCalendarData;
 
-public class CalendarActivity extends AppCompatActivity {
+public class CalendarOverviewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
+        setContentView(R.layout.activity_calendar_overview);
 
         // get calendar data
         final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCalendar();

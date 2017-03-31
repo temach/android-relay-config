@@ -1,4 +1,4 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.relaydata;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ public class RelayTimeStripData {
 
     private ArrayList<onTimeStripUpdateListener> listeners = new ArrayList<>();
 
-    RelayTimeStripData() {
+    public RelayTimeStripData() {
         // empty constructor
     }
 

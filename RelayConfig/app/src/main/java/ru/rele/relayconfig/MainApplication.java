@@ -2,6 +2,9 @@ package ru.rele.relayconfig;
 
 import android.app.Application;
 
+import ru.rele.relayconfig.relaydata.RelayCalendarData;
+import ru.rele.relayconfig.relaydata.RelayCycleData;
+
 
 /**
  * Created by artem on 3/22/17.

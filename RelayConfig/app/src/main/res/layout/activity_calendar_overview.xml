@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ru.rele.relayconfig.CalendarActivity">
+    tools:context="ru.rele.relayconfig.CalendarOverviewActivity">
 
-    <ru.rele.relayconfig.CalendarControl
+    <ru.rele.relayconfig.controls.CalendarControl
         android:id="@+id/yearCalendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </ru.rele.relayconfig.CalendarControl>
+    </ru.rele.relayconfig.controls.CalendarControl>
 
     <Button
         android:id="@+id/buttonGotoManageCyclesActivity"

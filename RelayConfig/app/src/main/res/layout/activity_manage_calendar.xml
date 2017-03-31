@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.rele.relayconfig.ManageCalendarActivity">
+
+    <ScrollView
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/calendarFlushToDeviceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/calendarList"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context="ru.rele.relayconfig.ManageCalendarActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="space_between"
+            app:alignItems="stretch"
+            app:alignContent="stretch" >
+
+            <Button
+                android:id="@+id/addCalendar"
+                android:text="Add Calendar"
+                android:layout_width="167dp"
+                android:layout_height="167dp" />
+        </com.google.android.flexbox.FlexboxLayout>
+    </ScrollView>
+
+    <Button
+        android:text="Flush to device"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/calendarFlushToDeviceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</android.support.constraint.ConstraintLayout>

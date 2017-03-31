@@ -6,6 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import ru.rele.relayconfig.controls.CycleControl;
+import ru.rele.relayconfig.controls.TimeStripControl;
+import ru.rele.relayconfig.relaydata.RelayCycleData;
+import ru.rele.relayconfig.relaydata.RelayTimeStripData;
+
 public class CycleEditActivity extends AppCompatActivity {
 
     @Override

@@ -1,4 +1,4 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.controls;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.staticfree.android.twentyfourhour.Analog24HClock;
+import ru.rele.relayconfig.CycleCalendarActivity;
+import ru.rele.relayconfig.CycleEditActivity;
+import ru.rele.relayconfig.CycleNameActivity;
+import ru.rele.relayconfig.MainApplication;
+import ru.rele.relayconfig.R;
+import ru.rele.relayconfig.relaydata.RelayCycleData;
+import ru.rele.relayconfig.relaydata.RelayTimeStripData;
 
 /**
  * Created by artem on 3/22/17.

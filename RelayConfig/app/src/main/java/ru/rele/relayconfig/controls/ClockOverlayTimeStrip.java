@@ -1,4 +1,4 @@
-package ru.rele.relayconfig;
+package ru.rele.relayconfig.controls;
 
 import java.util.Calendar;
 
@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import info.staticfree.android.twentyfourhour.overlay.DialOverlay;
+import ru.rele.relayconfig.relaydata.RelayTimeStripData;
 
 /**
  * Created by artem on 3/26/17.
