@@ -37,8 +37,16 @@
     <Button
         android:text="Master calendar"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/calendarFlushToDeviceButton"
         android:id="@+id/cyclesCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="Flush this calendar to device"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/calendarFlushToDeviceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

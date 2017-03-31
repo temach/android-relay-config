@@ -22,7 +22,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
 
         final FlexboxLayout cyclesList = (FlexboxLayout) findViewById(R.id.cyclesList);
 
-        final RelayCalendarData calendar = ((MainApplication)getApplication()).getCalendar();
+        final RelayCalendarData calendar = ((MainApplication)getApplication()).getCurrentCalendar();
 
         for (RelayCycleData cycle : calendar.getCycles()) {
             CycleControl cc = new CycleControl(ManageCyclesActivity.this);
@@ -52,9 +52,19 @@ public class ManageCyclesActivity extends AppCompatActivity {
             }
         });
 
+        Button flushCalendar = (Button) findViewById(R.id.calendarFlushToDeviceButton);
+        flushCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show calendar with all cycles
+                Intent myIntent = new Intent(ManageCyclesActivity.this, SelectDeviceWifiActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
         // This is for debug
         // RelayCycleData cycleData = new RelayCycleData();
-        // ((MainApplication)getApplication()).getCalendar().addRelayCycle(cycleData);
+        // ((MainApplication)getApplication()).getCurrentCalendar().addRelayCycle(cycleData);
         // CycleControl cc = new CycleControl(getBaseContext());
         // cc.assignData(cycleData);
         // cyclesList.addView(cc, 0);
@@ -73,7 +83,7 @@ public class ManageCyclesActivity extends AppCompatActivity {
         final FlexboxLayout cyclesList = (FlexboxLayout) findViewById(R.id.cyclesList);
         cyclesList.removeViews(0, cyclesList.getChildCount() - 1);
 
-        final RelayCalendarData calendar = ((MainApplication)getApplication()).getCalendar();
+        final RelayCalendarData calendar = ((MainApplication)getApplication()).getCurrentCalendar();
 
         for (RelayCycleData cycle : calendar.getCycles()) {
             CycleControl cc = new CycleControl(ManageCyclesActivity.this);

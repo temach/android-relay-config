@@ -21,7 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SelectDeviceWifiActivity">
+        <activity android:name=".ManageCalendarActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +33,7 @@
         <activity android:name=".CalendarOverviewActivity" />
         <activity android:name=".CycleNameActivity" />
         <activity android:name=".ManageCyclesActivity" />
-        <activity android:name=".ManageCalendarActivity"></activity>
+        <activity android:name=".SelectDeviceWifiActivity"></activity>
     </application>
 
 </manifest>

@@ -34,12 +34,5 @@
         </com.google.android.flexbox.FlexboxLayout>
     </ScrollView>
 
-    <Button
-        android:text="Flush to device"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/calendarFlushToDeviceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>

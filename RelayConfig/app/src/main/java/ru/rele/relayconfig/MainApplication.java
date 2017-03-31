@@ -2,6 +2,9 @@ package ru.rele.relayconfig;
 
 import android.app.Application;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.rele.relayconfig.relaydata.RelayCalendarData;
 import ru.rele.relayconfig.relaydata.RelayCycleData;
 
@@ -13,9 +16,19 @@ import ru.rele.relayconfig.relaydata.RelayCycleData;
 
 public class MainApplication extends Application {
 
-    private RelayCalendarData calendar = new RelayCalendarData();
-    public RelayCalendarData getCalendar() {
-        return calendar;
+    private List<RelayCalendarData> calendarList = new ArrayList<>();
+    public List<RelayCalendarData> getCalendarList() {
+        return calendarList;
+    }
+
+    private RelayCalendarData currentCalendar;
+    public RelayCalendarData getCurrentCalendar() {
+        if (currentCalendar == null) throw new AssertionError("Calendar can not be null");
+        return currentCalendar;
+    }
+    public void setCurrentCalendar(RelayCalendarData cal) {
+        if (cal == null) throw new AssertionError("Calendar can not be null");
+        currentCalendar = cal;
     }
 
     private RelayCycleData currentCycle;

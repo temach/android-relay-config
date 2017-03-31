@@ -14,7 +14,7 @@ public class CalendarOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar_overview);
 
         // get calendar data
-        final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCalendar();
+        final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCurrentCalendar();
 
         // Now fill calendar with data
         final CalendarControl yearCalendarControl = (CalendarControl) findViewById(R.id.yearCalendar);

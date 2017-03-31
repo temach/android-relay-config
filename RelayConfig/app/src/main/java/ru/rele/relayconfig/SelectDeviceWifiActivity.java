@@ -37,15 +37,15 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
             }
         });
 
-        Button startConfig = (Button) findViewById(R.id.startConfigButton);
-        startConfig.setOnClickListener(new View.OnClickListener() {
+        Button flush = (Button) findViewById(R.id.flushButton);
+        flush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mainWifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED
                         && mainWifi.getConnectionInfo() != null) {
                     // Show calendar with all cycles
-                    Intent myIntent = new Intent(SelectDeviceWifiActivity.this, ManageCyclesActivity.class);
-                    startActivity(myIntent);
+                    // send HTTP
+                    mainText.setText("Sending HTTP POST request to device");
                     return;
                 }
                 else {

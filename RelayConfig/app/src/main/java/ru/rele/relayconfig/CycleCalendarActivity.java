@@ -68,7 +68,7 @@ public class CycleCalendarActivity extends AppCompatActivity {
         cycleControl.assignData(cycleData);
 
         // get calendar data
-        final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCalendar();
+        final RelayCalendarData calendarData = ((MainApplication)getApplication()).getCurrentCalendar();
 
         // Now fill calendar with data
         final CalendarControl yearCalendarControl = (CalendarControl) findViewById(R.id.oneCycleYearCalendar);
