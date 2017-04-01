@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -13,14 +14,45 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketTimeoutException;
-import java.nio.channels.IllegalBlockingModeException;
 
 public class SelectDeviceWifiActivity extends AppCompatActivity {
+
+    public class PingServerTask extends AsyncTask<String, Void, Boolean> {
+        private int timeout;
+        private int port;
+
+        public PingServerTask(int serverPort, int timeoutMilliseconds) {
+            port = serverPort;
+            timeout = timeoutMilliseconds;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            try {
+                String host = strings[0];
+                Socket socket = new Socket();
+                InetSocketAddress address = new InetSocketAddress(host, port);
+                socket.connect(address, timeout);
+                socket.close();
+                return Boolean.TRUE;
+            } catch (Exception e) {
+                return Boolean.FALSE;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mainText.setText("Sending HTTP POST request to device.");
+        }
+
+        @Override
+        protected void onPostExecute(Boolean availiable) {
+            mainText.setText("Request result " + availiable);
+        }
+    }
 
     WifiManager mainWifi;
     TextView mainText;
@@ -58,8 +90,7 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
                     return;
                 }
                 // send HTTP
-                boolean result = isReachableByTcp("192.168.1.40", 9000, 1000);
-                mainText.setText("Sending HTTP POST request to device. Result:" + result);
+                checkReachableByTcp("192.168.1.40", 9000, 1000);
             }
         });
 
@@ -92,28 +123,8 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isReachableByTcp(String host, int port, int timeout) {
-        try {
-            Socket socket = new Socket();
-            InetSocketAddress address = new InetSocketAddress(host, port);
-            boolean tmp = address.isUnresolved();
-            String tmp1 = address.getHostName();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                String tmp2 = address.getHostString();
-            }
-            int tmp3 = address.getPort();
-            socket.connect(address, timeout);
-            socket.close();
-            return true;
-        } catch (SocketTimeoutException e) {
-            return false;
-        } catch (IOException e) {
-            return false;
-        } catch (IllegalBlockingModeException e) {
-            return false;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+    private void checkReachableByTcp(String host, int port, int timeout) {
+        new PingServerTask(port, timeout).execute(host);
     }
 
     @Override
