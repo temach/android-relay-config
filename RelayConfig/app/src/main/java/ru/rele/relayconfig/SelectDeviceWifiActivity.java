@@ -14,20 +14,95 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import ru.rele.relayconfig.network.RelayServerAPI;
+import ru.rele.relayconfig.relaydata.RelayCalendarData;
+
 public class SelectDeviceWifiActivity extends AppCompatActivity {
 
-    public class PingServerTask extends AsyncTask<String, Void, Boolean> {
-        private int timeout;
-        private int port;
+    // in milliseconds
+    private final int timeout = 1000;
+    private final int port = 9000;
+    private final String host = "192.168.1.40";
 
-        public PingServerTask(int serverPort, int timeoutMilliseconds) {
-            port = serverPort;
-            timeout = timeoutMilliseconds;
+    public class GetRelayCalendarData extends AsyncTask<Void, Void, RelayCalendarData> {
+
+        @Override
+        protected RelayCalendarData doInBackground(Void... voids) {
+            // set up the service
+            Retrofit restAdapter = new Retrofit
+                    .Builder()
+                    .baseUrl(String.format("http://%s:%s", host, port + ""))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            RelayServerAPI server = restAdapter.create(RelayServerAPI.class);
+            Call<RelayCalendarData> request = server.getRelayCalendarData();
+            try {
+                Response<RelayCalendarData> response = request.execute();
+                // isSuccessful is true if response code => 200 and <= 300
+                if (response.isSuccessful()) {
+                    return response.body();
+                }
+                return null;
+            } catch (IOException e) {
+                return null;
+            }
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mainText.setText("Sending HTTP POST request to device.");
+        }
+
+        @Override
+        protected void onPostExecute(RelayCalendarData data) {
+            super.onPostExecute(data);
+            mainText.setText("Retrieved calendar: " + data.calendarName);
+        }
+    }
+
+    public class PostRelayCalendarData extends AsyncTask<RelayCalendarData, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(RelayCalendarData... relayCalendarDatas) {
+            RelayCalendarData calendarData = relayCalendarDatas[0];
+            // set up the service
+            Retrofit restAdapter = new Retrofit
+                    .Builder()
+                    .baseUrl(String.format("http://%s:%s", host, port+""))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            RelayServerAPI server = restAdapter.create(RelayServerAPI.class);
+            Call<Void> request = server.submitRelayCalendarData(calendarData);
+            try {
+                // isSuccess is true if response code => 200 and <= 300
+                return request.execute().isSuccessful();
+            } catch (IOException e) {
+                return Boolean.FALSE;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mainText.setText("Sending HTTP POST request to device.");
+        }
+
+        @Override
+        protected void onPostExecute(Boolean available) {
+            super.onPostExecute(available);
+            mainText.setText("Settings flushed: " + available);
+        }
+    }
+
+    public class PingServerTask extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... strings) {
             try {
@@ -43,21 +118,20 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mainText.setText("Sending HTTP POST request to device.");
-        }
-
-        @Override
-        protected void onPostExecute(Boolean availiable) {
-            mainText.setText("Request result " + availiable);
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            isPingSucessful = true;
         }
     }
 
-    WifiManager mainWifi;
-    TextView mainText;
-    Button chooseWifiButton;
-    Button flushButton;
+    // this is a boolean so access is synchronised
+    private boolean isPingSucessful = false;
+
+    private WifiManager mainWifi;
+    private TextView mainText;
+    private Button chooseWifiButton;
+    private Button pingServerButton;
+    private Button flushButton;
 
     // details for getting wifi permission
     public final int MY_PERMISSIONS_REQUEST_WIFI = 99;
@@ -68,7 +142,6 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
 
         // Initiate wifi service manager
         mainWifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
 
         // This displays the currently selected wifi
         mainText = (TextView) findViewById(R.id.wifiStatus);
@@ -81,50 +154,69 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
             }
         });
 
+        pingServerButton = (Button) findViewById(R.id.pingServerButton);
+        pingServerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isWifiConnected()) {
+                    new PingServerTask().execute(host);
+                }
+                changeLayoutBasedOnWifi();
+            }
+        });
+
         flushButton = (Button) findViewById(R.id.flushButton);
         flushButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (! isWifiWorking()) {
-                    changeLayoutBasedOnWifi();
-                    return;
+                if (isServerUp()) {
+                    // send HTTP
+                    MainApplication app = ((MainApplication) getApplication());
+                    new PostRelayCalendarData().execute(app.getCurrentCalendar());
                 }
-                // send HTTP
-                checkReachableByTcp("192.168.1.40", 9000, 1000);
+                changeLayoutBasedOnWifi();
             }
         });
-
     }
 
     private boolean hasWifiPermissions() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
-                == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
-                == PackageManager.PERMISSION_GRANTED;
+        return true;
+        // return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
+        //         == PackageManager.PERMISSION_GRANTED
+        //         && ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
+        //         == PackageManager.PERMISSION_GRANTED;
     }
 
-    private boolean isWifiWorking() {
-        return hasWifiPermissions()
-                && mainWifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED
-                && mainWifi.getConnectionInfo() != null
-                // timeout after one second
-                ;
+    private boolean isWifiConnected() {
+        return true;
+        // return hasWifiPermissions()
+        //        && mainWifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED
+        //        && mainWifi.getConnectionInfo() != null;
+    }
+
+    private boolean isServerUp() {
+        // execute ping async
+        new PingServerTask().execute(host);
+        // check for result
+        return isPingSucessful;
+        // return isWifiConnected() && isPingSucessful;
     }
 
     private void changeLayoutBasedOnWifi() {
-        if (isWifiWorking()) {
-            mainText.setText("Wifi is connected");
-            chooseWifiButton.setVisibility(View.GONE);
-            flushButton.setVisibility(View.VISIBLE);
+        chooseWifiButton.setEnabled(true);
+        if (isServerUp()) {
+            mainText.setText("Server is ready");
+            flushButton.setEnabled(true);
+            pingServerButton.setEnabled(true);
+        } else if (isWifiConnected()) {
+            mainText.setText("Wifi is connected, but server is not responding");
+            flushButton.setEnabled(false);
+            pingServerButton.setEnabled(true);
         } else {
             mainText.setText("Please choose a wifi connection");
-            chooseWifiButton.setVisibility(View.VISIBLE);
-            flushButton.setVisibility(View.GONE);
+            flushButton.setEnabled(false);
+            pingServerButton.setEnabled(false);
         }
-    }
-
-    private void checkReachableByTcp(String host, int port, int timeout) {
-        new PingServerTask(port, timeout).execute(host);
     }
 
     @Override
@@ -137,9 +229,7 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
                 , MY_PERMISSIONS_REQUEST_WIFI);
             return;
         }
-
         changeLayoutBasedOnWifi();
-
         super.onResume();
     }
 

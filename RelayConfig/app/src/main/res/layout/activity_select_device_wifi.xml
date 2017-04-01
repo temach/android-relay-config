@@ -19,14 +19,18 @@
     <Button
         android:id="@+id/chooseWifiButton"
         android:text="Choose device (select its network)"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+    <Button
+        android:id="@+id/pingServerButton"
+        android:text="Check server is online"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <Button
         android:id="@+id/flushButton"
         android:text="Flush to device"
-        android:visibility="gone"
+        android:enabled="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
