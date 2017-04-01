@@ -13,55 +13,93 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+
 public class SelectDeviceWifiActivity extends AppCompatActivity {
 
-    TextView mainText;
     WifiManager mainWifi;
+    TextView mainText;
+    Button chooseWifiButton;
+    Button flushButton;
 
     // details for getting wifi permission
     public final int MY_PERMISSIONS_REQUEST_WIFI = 99;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_select_device_wifi);
 
         // Initiate wifi service manager
         mainWifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        Button chooseWifi = (Button) findViewById(R.id.chooseWifiButton);
-        chooseWifi.setOnClickListener(new View.OnClickListener() {
+
+        // This displays the currently selected wifi
+        mainText = (TextView) findViewById(R.id.wifiStatus);
+
+        chooseWifiButton = (Button) findViewById(R.id.chooseWifiButton);
+        chooseWifiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
             }
         });
 
-        Button flush = (Button) findViewById(R.id.flushButton);
-        flush.setOnClickListener(new View.OnClickListener() {
+        flushButton = (Button) findViewById(R.id.flushButton);
+        flushButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mainWifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED
-                        && mainWifi.getConnectionInfo() != null) {
-                    // Show calendar with all cycles
-                    // send HTTP
-                    mainText.setText("Sending HTTP POST request to device");
+                if (! isWifiWorking()) {
+                    changeLayoutBasedOnWifi();
                     return;
                 }
-                else {
-                    mainText.setText("Select a WiFi to conenct to the device");
-                }
+                // send HTTP
+                boolean result = isReachableByTcp("192.168.1.40", 9000, 1000);
+                mainText.setText("Sending HTTP POST request to device. Result:" + result);
             }
         });
 
-        // This displays the currently selected wifi
-        mainText = (TextView) findViewById(R.id.wifiStatus);
-        mainText.setText("Choose device");
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    private boolean hasWifiPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
+                == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean isWifiWorking() {
+        return hasWifiPermissions()
+                && mainWifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED
+                && mainWifi.getConnectionInfo() != null
+                // timeout after one second
+                ;
+    }
+
+    private void changeLayoutBasedOnWifi() {
+        if (isWifiWorking()) {
+            mainText.setText("Wifi is connected");
+            chooseWifiButton.setVisibility(View.GONE);
+            flushButton.setVisibility(View.VISIBLE);
+        } else {
+            mainText.setText("Please choose a wifi connection");
+            chooseWifiButton.setVisibility(View.VISIBLE);
+            flushButton.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isReachableByTcp(String host, int port, int timeout) {
+        try {
+            Socket socket = new Socket();
+            SocketAddress address = new InetSocketAddress(host, port);
+            socket.connect(address, timeout);
+            socket.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     @Override
@@ -74,6 +112,9 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
                 , MY_PERMISSIONS_REQUEST_WIFI);
             return;
         }
+
+        changeLayoutBasedOnWifi();
+
         super.onResume();
     }
 
@@ -98,11 +139,4 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
         }
     }
 
-    private boolean hasWifiPermissions() {
-        int tmp1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE);
-        return tmp1
-                == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
-                == PackageManager.PERMISSION_GRANTED;
-    }
 }

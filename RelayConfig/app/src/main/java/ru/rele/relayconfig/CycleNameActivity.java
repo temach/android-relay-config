@@ -21,7 +21,7 @@ public class CycleNameActivity extends AppCompatActivity {
         final RelayCycleData cycleData = ((MainApplication)getApplication()).getCurrentCycle();
 
         final EditText editText = (EditText) findViewById(R.id.cycleName);
-        editText.setText(cycleData.cycleName);
+        editText.setText(cycleData.getCycleName());
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -29,7 +29,7 @@ public class CycleNameActivity extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                cycleData.cycleName = charSequence.toString();
+                cycleData.setCycleName(charSequence.toString());
             }
             @Override
             public void afterTextChanged(Editable editable) {
@@ -38,11 +38,11 @@ public class CycleNameActivity extends AppCompatActivity {
         });
 
         final ColorPickerView colorPicker = (ColorPickerView) findViewById(R.id.cycleColorPicker);
-        colorPicker.setColor(cycleData.cycleColor, true);
+        colorPicker.setColor(cycleData.getCycleColor(), true);
         colorPicker.addOnColorSelectedListener(new OnColorSelectedListener() {
             @Override
             public void onColorSelected(int i) {
-                cycleData.cycleColor = i;
+                cycleData.setCycleColor(i);
             }
         });
     }

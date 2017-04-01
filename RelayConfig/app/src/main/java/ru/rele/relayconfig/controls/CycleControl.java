@@ -54,15 +54,15 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
         cycleData = cycle;
         cycleData.addOnCycleUpdateListener(this);
 
-        cycleName.setText(cycle.cycleName);
-        cycleColor.setBgPaint(cycle.cycleColor);
+        cycleName.setText(cycle.getCycleName());
+        cycleColor.setBgPaint(cycle.getCycleColor());
 
         timeStripManager.refillClock(cycleData.getTimeStrips());
         this.invalidate();
     }
 
     private void loadLayouts() {
-        calendarButton = new ClockOverlayButton(-0.2f, -0.5f, 0.045f);
+        calendarButton = new ClockOverlayButton(-0.2f, -0.5f, 0.055f);
         calendarButton.setText("CAL");
         calendarButton.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override
@@ -78,7 +78,7 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
         // quick hack to give the rectangle some size
         cycleColor.setText("   ");
 
-        cycleName = new ClockOverlayButton(-0.295f, -0.05f, 0.0625f);
+        cycleName = new ClockOverlayButton(-0.295f, -0.05f, 0.0725f);
         cycleName.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override
             public void onClockOverlayButtonClick() {
@@ -89,7 +89,7 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
             }
         });
 
-        editButton = new ClockOverlayButton(-0.2f, 0.5f, 0.045f);
+        editButton = new ClockOverlayButton(-0.2f, 0.5f, 0.055f);
         editButton.setText("EDIT");
         editButton.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override
@@ -123,7 +123,6 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
 
     @Override
     public void onCycleUpdate(RelayCycleData cycleData, RelayTimeStripData tmData, RelayCycleData.EVENT_TYPE eventType) {
-        // whatever changes, just redraw the display
         if (eventType == RelayCycleData.EVENT_TYPE.ADD_TIME_STRIP) {
             timeStripManager.refillClock(cycleData.getTimeStrips());
         }
@@ -136,6 +135,13 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
                 }
             }
         }
+        else if (eventType == RelayCycleData.EVENT_TYPE.CHANGE_CYCLE_COLOR) {
+            cycleColor.setBgPaint(cycleData.getCycleColor());
+        }
+        else if (eventType == RelayCycleData.EVENT_TYPE.CHANGE_CYCLE_NAME) {
+            cycleName.setText(cycleData.getCycleName());
+        }
+        // whatever changes, just redraw the display
         this.invalidate();
     }
 }

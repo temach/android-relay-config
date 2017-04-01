@@ -76,20 +76,4 @@ public class ManageCyclesActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        final FlexboxLayout cyclesList = (FlexboxLayout) findViewById(R.id.cyclesList);
-        cyclesList.removeViews(0, cyclesList.getChildCount() - 1);
-
-        final RelayCalendarData calendar = ((MainApplication)getApplication()).getCurrentCalendar();
-
-        for (RelayCycleData cycle : calendar.getCycles()) {
-            CycleControl cc = new CycleControl(ManageCyclesActivity.this);
-            cc.assignData(cycle);
-            cyclesList.addView(cc, 0);
-        }
-    }
-
 }

@@ -33,7 +33,7 @@ public class CalendarControl extends YearView {
     private Map<Date,EventInfo> adapter(Map<Date,RelayCycleData> input) {
         Map<Date,EventInfo> output = new HashMap<>();
         for (Date key : input.keySet()) {
-            output.put(key, new EventInfo(input.get(key).cycleColor, Color.WHITE));
+            output.put(key, new EventInfo(input.get(key).getCycleColor(), Color.WHITE));
         }
         return output;
     }

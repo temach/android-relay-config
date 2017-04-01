@@ -12,15 +12,16 @@ import java.util.List;
 
 public class RelayCycleData {
 
-    // This are public which is a quick hack.
-    public String cycleName = "Cycle 0";
-    public int cycleColor = Color.RED;
+    private String cycleName = "Cycle 0";
+    private int cycleColor = Color.RED;
 
     private List<RelayTimeStripData> timeStrips = new ArrayList<>();
 
     public enum EVENT_TYPE {
         ADD_TIME_STRIP
-        , UPDATE_TIME_STRIP;
+        , UPDATE_TIME_STRIP
+        , CHANGE_CYCLE_NAME
+        , CHANGE_CYCLE_COLOR;
     }
 
     public interface onCycleUpdateListener
@@ -44,6 +45,18 @@ public class RelayCycleData {
 
     public String getCycleName() {
         return cycleName;
+    }
+    public void setCycleName(String name) {
+        cycleName = name;
+        informListeners(null, EVENT_TYPE.CHANGE_CYCLE_NAME);
+    }
+
+    public int getCycleColor() {
+        return cycleColor;
+    }
+    public void setCycleColor(int color) {
+        cycleColor = color;
+        informListeners(null, EVENT_TYPE.CHANGE_CYCLE_COLOR);
     }
 
     public void addTimeStrip(RelayTimeStripData tm) {

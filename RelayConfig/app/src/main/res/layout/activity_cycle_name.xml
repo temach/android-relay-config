@@ -9,8 +9,7 @@
     <EditText
         android:layout_alignParentTop="true"
         android:id="@+id/cycleName"
-        android:inputType="textPersonName"
-        android:hint="Lightbulb morning cycle"
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
