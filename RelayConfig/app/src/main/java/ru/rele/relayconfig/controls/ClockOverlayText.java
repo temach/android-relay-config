@@ -18,7 +18,7 @@ public class ClockOverlayText implements DialOverlay {
     public static final float ROUNDED_RECT_RADIUS = 3f;
     private final float mOffsetY;
     private final float mOffsetX;
-    private static final float RECT_RATIO = 5.2f;
+    private static final float RECT_RATIO = 5.5f;
     private final RectF todayRect = new RectF();
     private final Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

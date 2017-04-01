@@ -17,7 +17,7 @@ import java.util.Map;
 public class RelayCalendarData {
 
     // This are public which is a quick hack.
-    public String calendarName = "School 432 calendar";
+    public String calendarName = "Change calendar name";
 
     private List<RelayCycleData> cycles = new ArrayList<>();
     private Map<Date, RelayCycleData> calendar = new HashMap<>();

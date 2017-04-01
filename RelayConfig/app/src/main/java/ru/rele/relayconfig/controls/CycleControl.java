@@ -62,7 +62,7 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
     }
 
     private void loadLayouts() {
-        calendarButton = new ClockOverlayButton(-0.2f, -0.5f, 0.055f);
+        calendarButton = new ClockOverlayButton(-0.27f, -0.56f, 0.055f);
         calendarButton.setText("CAL");
         calendarButton.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override
@@ -74,11 +74,11 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
             }
         });
 
-        cycleColor = new ClockOverlayText(-0.295f, 0.2f, 0.0625f);
+        cycleColor = new ClockOverlayText(-0.3f, 0.1f, 0.0625f);
         // quick hack to give the rectangle some size
         cycleColor.setText("   ");
 
-        cycleName = new ClockOverlayButton(-0.295f, -0.05f, 0.0725f);
+        cycleName = new ClockOverlayButton(-0.35f, -0.12f, 0.0725f);
         cycleName.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override
             public void onClockOverlayButtonClick() {
@@ -89,7 +89,7 @@ public class CycleControl extends Analog24HClock implements RelayCycleData.onCyc
             }
         });
 
-        editButton = new ClockOverlayButton(-0.2f, 0.5f, 0.055f);
+        editButton = new ClockOverlayButton(-0.27f, 0.43f, 0.055f);
         editButton.setText("EDIT");
         editButton.setOnClickListener(new ClockOverlayButton.OnClickListener() {
             @Override

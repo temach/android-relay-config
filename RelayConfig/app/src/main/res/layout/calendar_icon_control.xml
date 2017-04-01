@@ -7,13 +7,15 @@
     <Button
         android:id="@+id/calendarNameButton"
         android:text="Calendar name"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp" />
 
     <Button
         android:id="@+id/selectCalendarButton"
         android:text="Select this calendar"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp" />
 
 </LinearLayout>

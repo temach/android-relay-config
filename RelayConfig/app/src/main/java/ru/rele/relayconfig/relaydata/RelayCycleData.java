@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RelayCycleData {
 
-    private String cycleName = "Cycle 0";
+    private String cycleName = "Set name";
     private int cycleColor = Color.RED;
 
     private List<RelayTimeStripData> timeStrips = new ArrayList<>();

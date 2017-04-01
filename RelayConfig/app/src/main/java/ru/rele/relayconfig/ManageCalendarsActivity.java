@@ -37,7 +37,6 @@ public class ManageCalendarsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final RelayCalendarData data = new RelayCalendarData();
-                data.calendarName = "new calendar";
                 app.getCalendarList().add(data);
                 CalendarIconControl control = new CalendarIconControl(ManageCalendarsActivity.this, data);
                 calendarControlsList.addView(control, calendarControlsList.getChildCount() - 1);

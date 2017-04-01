@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
+import java.nio.channels.IllegalBlockingModeException;
 
 public class SelectDeviceWifiActivity extends AppCompatActivity {
 
@@ -93,11 +95,23 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
     private boolean isReachableByTcp(String host, int port, int timeout) {
         try {
             Socket socket = new Socket();
-            SocketAddress address = new InetSocketAddress(host, port);
+            InetSocketAddress address = new InetSocketAddress(host, port);
+            boolean tmp = address.isUnresolved();
+            String tmp1 = address.getHostName();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                String tmp2 = address.getHostString();
+            }
+            int tmp3 = address.getPort();
             socket.connect(address, timeout);
             socket.close();
             return true;
+        } catch (SocketTimeoutException e) {
+            return false;
         } catch (IOException e) {
+            return false;
+        } catch (IllegalBlockingModeException e) {
+            return false;
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }

@@ -33,7 +33,7 @@ public class CalendarIconControl extends LinearLayout {
     }
 
     void loadLayouts() {
-        inflate(getContext(), R.layout.timestrip_control, this);
+        inflate(getContext(), R.layout.calendar_icon_control, this);
 
         final Button calendarName = (Button) findViewById(R.id.calendarNameButton);
         calendarName.setText(calendarData.calendarName);
