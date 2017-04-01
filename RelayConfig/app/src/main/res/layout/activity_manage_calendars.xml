@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.rele.relayconfig.ManageCalendarActivity">
+    tools:context="ru.rele.relayconfig.ManageCalendarsActivity">
 
     <ScrollView
         android:layout_centerHorizontal="true"
@@ -17,7 +17,7 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
-            tools:context="ru.rele.relayconfig.ManageCalendarActivity"
+            tools:context="ru.rele.relayconfig.ManageCalendarsActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:flexDirection="row"
