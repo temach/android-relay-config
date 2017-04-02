@@ -13,9 +13,9 @@ import ru.rele.relayconfig.relaydata.RelayCalendarData;
  */
 
 public interface RelayServerAPI {
-    @POST("/api/relay")
+    @POST("/api/calendar")
     Call<Void> submitRelayCalendarData(@Body RelayCalendarData classObject);
 
-    @GET("/api/relay")
+    @GET("/api/calendar")
     Call<RelayCalendarData> getRelayCalendarData();
 }

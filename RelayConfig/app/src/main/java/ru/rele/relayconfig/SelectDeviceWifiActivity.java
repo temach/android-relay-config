@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -14,123 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import ru.rele.relayconfig.network.RelayServerAPI;
-import ru.rele.relayconfig.relaydata.RelayCalendarData;
-import ru.rele.relayconfig.relaydata.RelayCycleData;
+import ru.rele.relayconfig.network.NetworkTaskInfo;
+import ru.rele.relayconfig.network.TaskPingServer;
+import ru.rele.relayconfig.network.TaskPostRelayCalendarData;
 
 public class SelectDeviceWifiActivity extends AppCompatActivity {
-
-    // in milliseconds
-    private final int timeout = 1000;
-    private final int port = 9000;
-    private final String host = "192.168.1.40";
-
-    public class GetRelayCalendarData extends AsyncTask<Void, Void, RelayCalendarData> {
-
-        @Override
-        protected RelayCalendarData doInBackground(Void... voids) {
-            // set up the service
-            Retrofit restAdapter = new Retrofit
-                    .Builder()
-                    .baseUrl(String.format("http://%s:%s", host, port + ""))
-                    .addConverterFactory(GsonFactoryBuilder.buildGsonConverter())
-                    .build();
-            RelayServerAPI server = restAdapter.create(RelayServerAPI.class);
-            Call<RelayCalendarData> request = server.getRelayCalendarData();
-            try {
-                Response<RelayCalendarData> response = request.execute();
-                // isSuccessful is true if response code => 200 and <= 300
-                if (response.isSuccessful()) {
-                    return response.body();
-                }
-                return null;
-            } catch (IOException e) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mainText.setText("Sending HTTP POST request to device.");
-        }
-
-        @Override
-        protected void onPostExecute(RelayCalendarData data) {
-            super.onPostExecute(data);
-            mainText.setText("Retrieved calendar: " + data.calendarName);
-        }
-    }
-
-    public class PostRelayCalendarData extends AsyncTask<RelayCalendarData, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(RelayCalendarData... relayCalendarDatas) {
-            RelayCalendarData calendarData = relayCalendarDatas[0];
-
-            // set up the service
-            Retrofit restAdapter = new Retrofit
-                    .Builder()
-                    .baseUrl(String.format("http://%s:%s", host, port+""))
-                    .addConverterFactory(GsonFactoryBuilder.buildGsonConverter())
-                    .build();
-            RelayServerAPI server = restAdapter.create(RelayServerAPI.class);
-            Call<Void> request = server.submitRelayCalendarData(calendarData);
-            try {
-                // isSuccess is true if response code => 200 and <= 300
-                return request.execute().isSuccessful();
-            } catch (IOException e) {
-                return Boolean.FALSE;
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mainText.setText("Sending HTTP POST request to device.");
-        }
-
-        @Override
-        protected void onPostExecute(Boolean available) {
-            super.onPostExecute(available);
-            mainText.setText("Settings flushed: " + available);
-        }
-    }
-
-    public class PingServerTask extends AsyncTask<String, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            try {
-                String host = strings[0];
-                Socket socket = new Socket();
-                InetSocketAddress address = new InetSocketAddress(host, port);
-                socket.connect(address, timeout);
-                socket.close();
-                return Boolean.TRUE;
-            } catch (Exception e) {
-                return Boolean.FALSE;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            isPingSucessful = true;
-        }
-    }
 
     // this is a boolean so access is synchronised
     private boolean isPingSucessful = false;
@@ -167,7 +54,15 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isWifiConnected()) {
-                    new PingServerTask().execute(host);
+                    NetworkTaskInfo netTask = new NetworkTaskInfo();
+                    netTask.setListener(new NetworkTaskInfo.NetworkTaskListener() {
+                        @Override
+                        public void OnNetworkTaskUpdate(NetworkTaskInfo task) {
+                            mainText.setText(task.getStatus());
+                            isPingSucessful = task.getPingResult();
+                        }
+                    });
+                    new TaskPingServer(netTask).execute();
                 }
                 changeLayoutBasedOnWifi();
             }
@@ -179,8 +74,15 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isServerUp()) {
                     // send HTTP
+                    NetworkTaskInfo netTask = new NetworkTaskInfo();
+                    netTask.setListener(new NetworkTaskInfo.NetworkTaskListener() {
+                        @Override
+                        public void OnNetworkTaskUpdate(NetworkTaskInfo task) {
+                            mainText.setText(task.getStatus());
+                        }
+                    });
                     MainApplication app = ((MainApplication) getApplication());
-                    new PostRelayCalendarData().execute(app.getCurrentCalendar());
+                    new TaskPostRelayCalendarData(netTask).execute(app.getCurrentCalendar());
                 }
                 changeLayoutBasedOnWifi();
             }
@@ -204,7 +106,15 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
 
     private boolean isServerUp() {
         // execute ping async
-        new PingServerTask().execute(host);
+        NetworkTaskInfo netTask = new NetworkTaskInfo();
+        netTask.setListener(new NetworkTaskInfo.NetworkTaskListener() {
+            @Override
+            public void OnNetworkTaskUpdate(NetworkTaskInfo task) {
+                mainText.setText(task.getStatus());
+                isPingSucessful = task.getPingResult();
+            }
+        });
+        new TaskPingServer(netTask).execute();
         // check for result
         return isPingSucessful;
         // return isWifiConnected() && isPingSucessful;
@@ -252,7 +162,7 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
                         return;
                     }
                 }
-                // If request is cancelled, the result arrays are empty.
+                // If task is cancelled, the result arrays are empty.
                 if (grantResults.length > 0) {
                     // WifiPermsAllowed = true;
                     // permission was granted, yay! Do the
