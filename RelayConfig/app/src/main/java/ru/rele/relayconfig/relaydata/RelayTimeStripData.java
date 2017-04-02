@@ -1,6 +1,10 @@
 package ru.rele.relayconfig.relaydata;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by artem on 3/23/17.
@@ -13,13 +17,23 @@ public class RelayTimeStripData {
         void onTimeStripUpdate(RelayTimeStripData data);
     }
 
+    @SerializedName("startHour")
+    @Expose
     private int startHour;
+
+    @SerializedName("startMinute")
+    @Expose
     private int startMinute;
 
+    @SerializedName("endHour")
+    @Expose
     private int endHour;
+
+    @SerializedName("endMinute")
+    @Expose
     private int endMinute;
 
-    private ArrayList<onTimeStripUpdateListener> listeners = new ArrayList<>();
+    private List<onTimeStripUpdateListener> listeners = new ArrayList<>();
 
     public RelayTimeStripData() {
         // empty constructor

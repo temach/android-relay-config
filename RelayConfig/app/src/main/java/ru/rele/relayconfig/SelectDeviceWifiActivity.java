@@ -14,9 +14,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,6 +30,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.rele.relayconfig.network.RelayServerAPI;
 import ru.rele.relayconfig.relaydata.RelayCalendarData;
+import ru.rele.relayconfig.relaydata.RelayCycleData;
 
 public class SelectDeviceWifiActivity extends AppCompatActivity {
 
@@ -40,7 +47,7 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
             Retrofit restAdapter = new Retrofit
                     .Builder()
                     .baseUrl(String.format("http://%s:%s", host, port + ""))
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonFactoryBuilder.buildGsonConverter())
                     .build();
             RelayServerAPI server = restAdapter.create(RelayServerAPI.class);
             Call<RelayCalendarData> request = server.getRelayCalendarData();
@@ -73,11 +80,12 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(RelayCalendarData... relayCalendarDatas) {
             RelayCalendarData calendarData = relayCalendarDatas[0];
+
             // set up the service
             Retrofit restAdapter = new Retrofit
                     .Builder()
                     .baseUrl(String.format("http://%s:%s", host, port+""))
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonFactoryBuilder.buildGsonConverter())
                     .build();
             RelayServerAPI server = restAdapter.create(RelayServerAPI.class);
             Call<Void> request = server.submitRelayCalendarData(calendarData);

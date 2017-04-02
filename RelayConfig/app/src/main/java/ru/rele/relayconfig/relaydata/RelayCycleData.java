@@ -2,6 +2,9 @@ package ru.rele.relayconfig.relaydata;
 
 import android.graphics.Color;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,10 +15,19 @@ import java.util.List;
 
 public class RelayCycleData {
 
+    @SerializedName("name")
+    @Expose
     private String cycleName = "Set name";
+
+    @SerializedName("color")
+    @Expose
     private int cycleColor = Color.RED;
 
+    @SerializedName("timeStrips")
+    @Expose
     private List<RelayTimeStripData> timeStrips = new ArrayList<>();
+
+    private List<onCycleUpdateListener> listeners = new ArrayList<>();
 
     public enum EVENT_TYPE {
         ADD_TIME_STRIP
@@ -28,8 +40,6 @@ public class RelayCycleData {
     {
         void onCycleUpdate(RelayCycleData data, RelayTimeStripData tmData, EVENT_TYPE eventType);
     }
-
-    private List<onCycleUpdateListener> listeners = new ArrayList<>();
 
     public void addOnCycleUpdateListener(onCycleUpdateListener listener) {
         this.listeners.add(listener);   // Store the listener object

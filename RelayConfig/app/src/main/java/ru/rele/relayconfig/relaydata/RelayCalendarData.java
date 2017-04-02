@@ -1,5 +1,8 @@
 package ru.rele.relayconfig.relaydata;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -16,11 +19,17 @@ import java.util.Map;
 
 public class RelayCalendarData {
 
-    // This are public which is a quick hack.
+    // This is a public field which is a quick hack.
+    @SerializedName("name")
+    @Expose
     public String calendarName = "Change calendar name";
 
-    private List<RelayCycleData> cycles = new ArrayList<>();
+    @SerializedName("calendar")
+    @Expose
     private Map<Date, RelayCycleData> calendar = new HashMap<>();
+
+    private List<RelayCycleData> cycles = new ArrayList<>();
+
 
     public void addRelayCycle(RelayCycleData data) {
         cycles.add(data);
