@@ -28,9 +28,14 @@ public class TaskPingServer extends AsyncTask<Void, Void, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
-        task.setPingResult(true);
+    protected void onPostExecute(Boolean result) {
+        super.onPostExecute(result);
+        if (result) {
+            task.setStatus("Server is ready");
+        } else {
+            task.setStatus("Wifi is connected, but server is not responding");
+        }
+        task.setPingResult(result);
     }
 }
 

@@ -62,6 +62,15 @@ public class ManageCyclesActivity extends AppCompatActivity {
             }
         });
 
+        Button viewAllCalendarsButton = (Button)findViewById(R.id.showCalendarsButton);
+        viewAllCalendarsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(ManageCyclesActivity.this, ManageCalendarsActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
         // This is for debug
         // RelayCycleData cycleData = new RelayCycleData();
         // ((MainApplication)getApplication()).getCurrentCalendar().addRelayCycle(cycleData);

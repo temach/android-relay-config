@@ -17,7 +17,7 @@ public class GsonDateSerializer implements JsonSerializer<Date> {
 
     @Override
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-        String primitive = src.getYear() + "-" + src.getMonth() + "-" + src.getDay();
+        String primitive = src.toString();
         return new JsonPrimitive(primitive);
     }
 }

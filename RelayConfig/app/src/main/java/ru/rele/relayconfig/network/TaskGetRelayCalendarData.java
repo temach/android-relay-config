@@ -44,13 +44,18 @@ public class TaskGetRelayCalendarData extends AsyncTask<Void, Void, RelayCalenda
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        task.setStatus("Sending HTTP POST task to device.");
+        task.setStatus("Getting calendar data from server");
     }
 
     @Override
     protected void onPostExecute(RelayCalendarData data) {
         super.onPostExecute(data);
-        task.setStatus("Retrieved calendar: " + data.calendarName);
+        if (data != null) {
+            task.setRelayCalendarData(data);
+            task.setStatus("Retrieved calendar: " + data.calendarName);
+        } else {
+            task.setStatus("Failed to read data");
+        }
     }
 }
 

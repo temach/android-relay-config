@@ -15,6 +15,12 @@ import java.util.List;
 
 public class RelayCycleData {
 
+    private static int IdGenerator = 0;
+    private int Id = IdGenerator++;
+    public int getId() {
+        return Id;
+    }
+
     @SerializedName("name")
     @Expose
     private String cycleName = "Set name";

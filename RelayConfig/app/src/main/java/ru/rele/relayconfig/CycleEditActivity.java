@@ -1,5 +1,6 @@
 package ru.rele.relayconfig;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,6 +49,15 @@ public class CycleEditActivity extends AppCompatActivity {
                 TimeStripControl control = new TimeStripControl(getBaseContext(), data);
                 // show the new control
                 timeStripsLayout.addView(control);
+            }
+        });
+
+        Button applyCycle = (Button)findViewById(R.id.applyCycle);
+        applyCycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(CycleEditActivity.this, ManageCyclesActivity.class);
+                startActivity(myIntent);
             }
         });
     }

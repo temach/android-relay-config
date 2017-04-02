@@ -101,7 +101,7 @@ public class CycleCalendarActivity extends AppCompatActivity {
         applyCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(CycleCalendarActivity.this, CalendarOverviewActivity.class);
+                Intent myIntent = new Intent(CycleCalendarActivity.this, ManageCyclesActivity.class);
                 startActivity(myIntent);
             }
         });

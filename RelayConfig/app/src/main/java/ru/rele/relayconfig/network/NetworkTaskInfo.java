@@ -1,5 +1,7 @@
 package ru.rele.relayconfig.network;
 
+import ru.rele.relayconfig.relaydata.RelayCalendarData;
+
 /**
  * Created by artem on 4/2/17.
  */
@@ -19,6 +21,7 @@ public class NetworkTaskInfo {
     // return values
     private String status;
     private boolean pingResult;
+    private RelayCalendarData relayCalendarData;
 
     private NetworkTaskListener listener;
     public void setListener(NetworkTaskListener l) {
@@ -39,5 +42,13 @@ public class NetworkTaskInfo {
     }
     public boolean getPingResult() {
         return pingResult;
+    }
+
+    public void setRelayCalendarData(RelayCalendarData data) {
+        relayCalendarData = data;
+        listener.OnNetworkTaskUpdate(this);
+    }
+    public RelayCalendarData getRelayCalendarData() {
+        return relayCalendarData;
     }
 }

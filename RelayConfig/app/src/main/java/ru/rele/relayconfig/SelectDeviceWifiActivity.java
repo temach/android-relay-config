@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ru.rele.relayconfig.network.NetworkTaskInfo;
+import ru.rele.relayconfig.network.TaskGetRelayCalendarData;
 import ru.rele.relayconfig.network.TaskPingServer;
 import ru.rele.relayconfig.network.TaskPostRelayCalendarData;
 
@@ -27,6 +28,7 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
     private Button chooseWifiButton;
     private Button pingServerButton;
     private Button flushButton;
+    private Button readButton;
 
     // details for getting wifi permission
     public final int MY_PERMISSIONS_REQUEST_WIFI = 99;
@@ -68,44 +70,72 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
             }
         });
 
-        flushButton = (Button) findViewById(R.id.flushButton);
+        readButton = (Button) findViewById(R.id.readDeviceButton);
+        readButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // send HTTP
+                NetworkTaskInfo netTask = new NetworkTaskInfo();
+                netTask.setListener(new NetworkTaskInfo.NetworkTaskListener() {
+                    @Override
+                    public void OnNetworkTaskUpdate(NetworkTaskInfo task) {
+                        mainText.setText(task.getStatus());
+                        if (task.getRelayCalendarData() != null) {
+                            MainApplication app = ((MainApplication) getApplication());
+                            // add the retreived calendar to calendar list
+                            app.getCalendarList().add(task.getRelayCalendarData());
+                        }
+                    }
+                });
+                new TaskGetRelayCalendarData(netTask).execute();
+            }
+        });
+
+        flushButton = (Button) findViewById(R.id.flushDeviceButton);
         flushButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isServerUp()) {
-                    // send HTTP
-                    NetworkTaskInfo netTask = new NetworkTaskInfo();
-                    netTask.setListener(new NetworkTaskInfo.NetworkTaskListener() {
-                        @Override
-                        public void OnNetworkTaskUpdate(NetworkTaskInfo task) {
-                            mainText.setText(task.getStatus());
-                        }
-                    });
-                    MainApplication app = ((MainApplication) getApplication());
-                    new TaskPostRelayCalendarData(netTask).execute(app.getCurrentCalendar());
+                // send HTTP
+                NetworkTaskInfo netTask = new NetworkTaskInfo();
+                netTask.setListener(new NetworkTaskInfo.NetworkTaskListener() {
+                                @Override
+                                public void OnNetworkTaskUpdate(NetworkTaskInfo task) {
+                        mainText.setText(task.getStatus());
                 }
-                changeLayoutBasedOnWifi();
+            });
+                MainApplication app = ((MainApplication) getApplication());
+                new TaskPostRelayCalendarData(netTask).execute(app.getCurrentCalendar());
+            }
+        });
+
+        Button doneButton = (Button)findViewById(R.id.doneButton);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(SelectDeviceWifiActivity.this, ManageCalendarsActivity.class);
+                startActivity(myIntent);
             }
         });
     }
 
     private boolean hasWifiPermissions() {
-        return true;
-        // return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
-        //         == PackageManager.PERMISSION_GRANTED
-        //         && ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
-        //         == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
+                == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     private boolean isWifiConnected() {
-        return true;
-        // return hasWifiPermissions()
-        //        && mainWifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED
-        //        && mainWifi.getConnectionInfo() != null;
+        return hasWifiPermissions()
+               && mainWifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED
+               && mainWifi.getConnectionInfo() != null;
     }
 
     private boolean isServerUp() {
         // execute ping async
+        if (! isWifiConnected()) {
+            return false;
+        }
         NetworkTaskInfo netTask = new NetworkTaskInfo();
         netTask.setListener(new NetworkTaskInfo.NetworkTaskListener() {
             @Override
@@ -117,21 +147,25 @@ public class SelectDeviceWifiActivity extends AppCompatActivity {
         new TaskPingServer(netTask).execute();
         // check for result
         return isPingSucessful;
-        // return isWifiConnected() && isPingSucessful;
     }
 
     private void changeLayoutBasedOnWifi() {
         chooseWifiButton.setEnabled(true);
         if (isServerUp()) {
-            mainText.setText("Server is ready");
-            flushButton.setEnabled(true);
+            readButton.setEnabled(true);
+            if (((MainApplication) getApplication()).isCalendarNull()) {
+                flushButton.setEnabled(false);
+            } else {
+                flushButton.setEnabled(true);
+            }
             pingServerButton.setEnabled(true);
         } else if (isWifiConnected()) {
-            mainText.setText("Wifi is connected, but server is not responding");
+            readButton.setEnabled(false);
             flushButton.setEnabled(false);
             pingServerButton.setEnabled(true);
         } else {
             mainText.setText("Please choose a wifi connection");
+            readButton.setEnabled(false);
             flushButton.setEnabled(false);
             pingServerButton.setEnabled(false);
         }

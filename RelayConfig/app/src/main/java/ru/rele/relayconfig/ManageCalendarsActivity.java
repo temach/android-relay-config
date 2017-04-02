@@ -12,8 +12,6 @@ import java.util.List;
 
 import ru.rele.relayconfig.controls.CalendarIconControl;
 import ru.rele.relayconfig.relaydata.RelayCalendarData;
-import ru.rele.relayconfig.relaydata.RelayCycleData;
-import ru.rele.relayconfig.relaydata.RelayTimeStripData;
 
 public class ManageCalendarsActivity extends AppCompatActivity {
 
@@ -45,30 +43,43 @@ public class ManageCalendarsActivity extends AppCompatActivity {
             }
         });
 
+        Button readCalendar = (Button) findViewById(R.id.gotoWifiActivity);
+        readCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // set current cycle to null, so we have nothing
+                // to flush to device only reading is allowed
+                app.nullifyCurrentCalendar();
+                // Show calendar with all cycles
+                Intent myIntent = new Intent(ManageCalendarsActivity.this, SelectDeviceWifiActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
         // speed up debug of networking
-        final RelayCalendarData calData = new RelayCalendarData();
-        app.getCalendarList().add(calData);
+        // final RelayCalendarData calData = new RelayCalendarData();
+        // app.getCalendarList().add(calData);
 
-        RelayCycleData cycleData = new RelayCycleData();
-        calData.addRelayCycle(cycleData);
+        // RelayCycleData cycleData = new RelayCycleData();
+        // calData.addRelayCycle(cycleData);
 
-        RelayTimeStripData tmData = new RelayTimeStripData();
-        tmData.updateStart(1, 0);
-        tmData.updateEnd(10, 0);
-        cycleData.addTimeStrip(tmData);
+        // RelayTimeStripData tmData = new RelayTimeStripData();
+        // tmData.updateStart(1, 0);
+        // tmData.updateEnd(10, 0);
+        // cycleData.addTimeStrip(tmData);
 
-        RelayTimeStripData tmData1 = new RelayTimeStripData();
-        tmData1.updateStart(9, 30);
-        tmData1.updateEnd(23, 30);
-        cycleData.addTimeStrip(tmData1);
+        // RelayTimeStripData tmData1 = new RelayTimeStripData();
+        // tmData1.updateStart(9, 30);
+        // tmData1.updateEnd(23, 30);
+        // cycleData.addTimeStrip(tmData1);
 
-        calData.cycleAddDay(cycleData, 2017, 7, 3);
-        calData.cycleAddDay(cycleData, 2017, 9, 9);
+        // calData.cycleAddDay(cycleData, 2017, 7, 3);
+        // calData.cycleAddDay(cycleData, 2017, 9, 9);
 
-        app.setCurrentCalendar(calData);
-        // Show calendar with all cycles
-        Intent myIntent = new Intent(ManageCalendarsActivity.this, SelectDeviceWifiActivity.class);
-        startActivity(myIntent);
+        // app.setCurrentCalendar(calData);
+        // // Show calendar with all cycles
+        // Intent myIntent = new Intent(ManageCalendarsActivity.this, SelectDeviceWifiActivity.class);
+        // startActivity(myIntent);
 
     }
 

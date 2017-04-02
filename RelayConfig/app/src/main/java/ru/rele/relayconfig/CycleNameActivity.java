@@ -1,9 +1,12 @@
 package ru.rele.relayconfig;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.flask.colorpicker.ColorPickerView;
@@ -43,6 +46,15 @@ public class CycleNameActivity extends AppCompatActivity {
             @Override
             public void onColorSelected(int i) {
                 cycleData.setCycleColor(i);
+            }
+        });
+
+        Button applyNameAndColor = (Button)findViewById(R.id.applyNameAndColor);
+        applyNameAndColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(CycleNameActivity.this, ManageCyclesActivity.class);
+                startActivity(myIntent);
             }
         });
     }

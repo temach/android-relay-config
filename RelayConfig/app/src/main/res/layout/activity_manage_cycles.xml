@@ -43,11 +43,20 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:text="Flush this calendar to device"
+        android:id="@+id/showCalendarsButton"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:text="View all calendars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="Flush this calendar to device"
+        android:layout_above="@id/showCalendarsButton"
+        android:layout_centerHorizontal="true"
         android:id="@+id/calendarFlushToDeviceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
 </RelativeLayout>

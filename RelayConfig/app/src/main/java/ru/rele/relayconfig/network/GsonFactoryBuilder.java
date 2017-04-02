@@ -21,7 +21,7 @@ public class GsonFactoryBuilder {
         builder.registerTypeAdapter(Date.class, new GsonDateSerializer());
 
         Gson myGson = builder
-                // .setPrettyPrinting()
+                .setPrettyPrinting()
                 .excludeFieldsWithoutExposeAnnotation()
                 .enableComplexMapKeySerialization()
                 .create();

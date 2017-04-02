@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,13 +27,15 @@ public class RelayCalendarData {
 
     @SerializedName("calendar")
     @Expose
-    private Map<Date, RelayCycleData> calendar = new HashMap<>();
+    private Map<Date, Integer> calendar = new HashMap<>();
 
-    private List<RelayCycleData> cycles = new ArrayList<>();
+    @SerializedName("cycles")
+    @Expose
+    private Map<Integer,RelayCycleData> cycles = new HashMap<>();
 
 
     public void addRelayCycle(RelayCycleData data) {
-        cycles.add(data);
+        cycles.put(data.getId(), data);
     }
 
     public Map<Date,RelayCycleData> getEventsForMonth(int month) {
@@ -41,19 +44,19 @@ public class RelayCalendarData {
         for (Date key : calendar.keySet()) {
             cal.setTime(key);
             if (cal.get(Calendar.MONTH) == month) {
-                ret.put(key, calendar.get(key));
+                ret.put(key, cycles.get(calendar.get(key)));
             }
         }
         return Collections.unmodifiableMap(ret);
     }
 
-    public List<RelayCycleData> getCycles() {
-        return Collections.unmodifiableList(cycles);
+    public Collection<RelayCycleData> getCycles() {
+        return Collections.unmodifiableCollection(cycles.values());
     }
 
     public void cycleAddDay(RelayCycleData cycle, int year, int month, int day) {
-        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
-        calendar.put(getDate(year, month, day), cycle);
+        if (! cycles.values().contains(cycle)) throw new AssertionError("You must first add cycle, then set it as current.");
+        calendar.put(getDate(year, month, day), cycle.getId());
     }
 
     public void cycleRemoveDay(RelayCycleData cycle, int year, int month, int day) {
@@ -64,7 +67,7 @@ public class RelayCalendarData {
         // refer to
         // https://developer.android.com/reference/java/util/Calendar.html
         // on how to add weekends and so on
-        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
+        if (! cycles.values().contains(cycle)) throw new AssertionError("You must first add cycle, then set it as current.");
         Calendar counter = getCalendarFirstDay(year, month);
         Calendar limit = (Calendar) counter.clone();
         limit.add(Calendar.MONTH, 1);
@@ -72,7 +75,7 @@ public class RelayCalendarData {
             if (counter.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
                     && counter.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                 // add only working days
-                calendar.put(counter.getTime(), cycle);
+                calendar.put(counter.getTime(), cycle.getId());
             }
             // increment counter
             counter.add(Calendar.DAY_OF_MONTH, 1);
@@ -83,7 +86,7 @@ public class RelayCalendarData {
         // refer to
         // https://developer.android.com/reference/java/util/Calendar.html
         // on how to add weekends and so on
-        if (cycles.indexOf(cycle) < 0) throw new AssertionError("You must first add cycle, then set it as current.");
+        if (! cycles.values().contains(cycle)) throw new AssertionError("You must first add cycle, then set it as current.");
         Calendar counter = getCalendarFirstDay(year, month);
         Calendar limit = (Calendar) counter.clone();
         limit.add(Calendar.MONTH, 1);

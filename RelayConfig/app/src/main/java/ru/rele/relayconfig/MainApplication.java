@@ -30,6 +30,12 @@ public class MainApplication extends Application {
         if (cal == null) throw new AssertionError("Calendar can not be null");
         currentCalendar = cal;
     }
+    public void nullifyCurrentCalendar() {
+        currentCalendar = null;
+    }
+    public boolean isCalendarNull() {
+        return currentCalendar == null;
+    }
 
     private RelayCycleData currentCycle;
     public RelayCycleData getCurrentCycle() {
